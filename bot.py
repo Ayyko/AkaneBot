@@ -70,6 +70,7 @@ async def on_member_join(member):
     if not member.server.id == "169056767219597312":
         return
     announce = member.server.get_channel("198237266202591232")
+    await bot.send_message(announce, "@here " + member.name + " (" + member.id + ") new member!")
 
 
 
