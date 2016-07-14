@@ -238,6 +238,13 @@ async def debug(ctx, *, code: str):
     await bot.say(python.format(result))
 
 
+@bot.command(pass_context=True, hidden=False)
+@is_owner
+async def die(ctx):
+    bot.say("Bye-bye")
+    await bot.logout
+
+
 def save():
     with open("bot_shit.json", "w") as c:
         c.write(json.dump(bot_shit))
