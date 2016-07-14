@@ -70,8 +70,7 @@ async def on_member_join(member):
     if not member.server.id == "169056767219597312":
         return
     announce = member.server.get_channel("198237266202591232")
-    await bot.send_message(announce, "@here " + member.name + " (" + member.id + ") new member!")
-
+    await bot.send_message(announce, "@here We have a new member: " + member.name + " (id: " + member.id + ")")
 
 
 # Decided to put off tags for now, as I feel like they might be a bit too meme-y for this server. might experiment with
@@ -165,7 +164,7 @@ async def on_member_join(member):
 #     else:
 #         await bot.say("No tag with that name exists")
 
-@bot.group(pass_context=True)
+@bot.group(pass_context=True, invoke_without_command=True)
 async def roles(ctx):
     """Displays basic info about roles and channels
 
@@ -179,9 +178,9 @@ async def roles(ctx):
                                "Valkyrie Member: For those who have completed (or want to see spoilers for) All Muv-Luv related content, including other VNs and shows\n" \
                                "Spoiler Reader: Allows access to the message history of <#179284511803179008> and <#179284770210054145>. Be warned: These channels can have spoilers for anything at any time\n" \
                                "Muv Luv Alternative Divergence: Allows access to the channel for theglob1981's fanfic (Main Trilogy spoilers)```\n" \
-                               "These roles can be given using the `roles add [name]` command"
-    await bot.whisper(bot_shit['role_msg'])
-    await bot.say(ctx.message.author.mention + ", check your PMs", delete_after=10)
+                               "These roles dictate which spoiler channels you can view, and can be added using the `roles add [name]` command"
+    await bot.say(bot_shit['role_msg'], delete_after=60)  # Time can be adjusted/changed to a PM if the need arises
+
 
 @roles.command(pass_context=True, no_pm=True)
 async def add(ctx, *, role: str):
@@ -196,22 +195,32 @@ async def add(ctx, *, role: str):
     valkyrie = discord.utils.get(ctx.message.server.roles, id="173100534474080257")
     spoiler = discord.utils.get(ctx.message.server.roles, id="180756419174203393")
     mlad = discord.utils.get(ctx.message.server.roles, id="185872382886412297")
+    role = role.split()  # I'm a dum and thought it was already a list, whoops
     if role[0].lower() == "cadet":
+        await bot.say(ctx.message.author.mention + " 👌")
         await bot.add_roles(ctx.message.author, cadet)
         return
     if role[0].lower() == "recruit":
+        await bot.say(ctx.message.author.mention + " 👌")
         await bot.add_roles(ctx.message.author, cadet, recruit)
         return
     if role[0].lower() == "eishi":
+        await bot.say(ctx.message.author.mention + " 👌")
         await bot.add_roles(ctx.message.author, cadet, recruit, eishi)
+        return
     if role[0].lower() == "valkyrie":
+        await bot.say(ctx.message.author.mention + " 👌")
         await bot.add_roles(ctx.message.author, cadet, recruit, eishi, valkyrie)
         return
     if role[0].lower() == "spoiler":
+        await bot.say(ctx.message.author.mention + " 👌")
         await bot.add_roles(ctx.message.author, spoiler)
         return
     if role[0].lower() == "mlad" or role[0].lower() == "fanfic" or role[0].lower() == "divergence" or "alternative" in [x.lower() for x in role] and "divergence" in [x.lower() for x in role]:
+        await bot.say(ctx.message.author.mention + " 👌")
         await bot.add_roles(ctx.message.author, mlad)
+        return
+    await bot.say("Please choose a valid role!")
 
 
 def is_owner():
