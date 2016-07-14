@@ -55,7 +55,7 @@ Made by Ako using discord.py'''
 #              '174219435844960256',  # Altered_Fable
 #              ]
 
-bot = commands.Bot(command_prefix=['ml ', 'ML ', 'Ml ', 'mL ', 'maburabu ', 'MabuRabu ', '<@196485834273193985> ', '<@!196485834273193985> '], description=description, pm_help=True)
+bot = commands.Bot(command_prefix=['ml ', 'ML ', 'Ml ', 'mL ', 'akane', 'Akane', '<@202989516904988673> ', '<@!202989516904988673> '], description=description, pm_help=True)
 
 
 @bot.event
