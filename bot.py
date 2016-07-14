@@ -239,7 +239,7 @@ async def debug(ctx, *, code: str):
 
 
 @bot.command(pass_context=True, hidden=False)
-@is_owner
+@is_owner()
 async def die(ctx):
     bot.say("Bye-bye")
     await bot.logout
