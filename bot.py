@@ -48,7 +48,7 @@ async def on_member_join(member):
 @bot.event
 async def on_message(message):
     save()
-    bot.process_commands
+    await bot.process_commands(message)
 
 
 def is_owner():
@@ -79,7 +79,7 @@ async def debug(ctx, *, code: str):
 @is_owner()
 async def die(ctx, hidden=True):
     await bot.say("Bye-bye")
-    bot.logout
+    await bot.logout()
 
 
 def save():
