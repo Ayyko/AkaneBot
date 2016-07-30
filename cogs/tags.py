@@ -6,7 +6,7 @@ class Tags:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(name="tags", pass_context=True, no_pm=True)
+    @commands.group(name="tags", pass_context=True, no_pm=True, enabled=False)
     async def tag(self, ctx):
         """Lists all tags that can be used in the current channel
 
