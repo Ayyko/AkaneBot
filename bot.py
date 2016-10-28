@@ -13,14 +13,21 @@ import traceback
 # logger.addHandler(handler)
 
 
-description = '''A bot made for the Muv Luv Fans server
+description = '''A bot made for stuff and things.
+It can probably do said stuff, potentially even things.
+Made by Ako using discord.py version ''' + discord.__version__
 
-Made by Ako using discord.py'''
+startup_extensions = ["cogs.muvluv", "cogs.owner", "cogs.search"]
 
-startup_extensions = ["cogs.tags", "cogs.roles"]
+async def get_pre(self, message):
+    ret = [message.server.me.mention, "Akane ", "akane ", "(•ω•) "]
+    if message.server.id == "169056767219597312":
+        ret += ["ml", "Ml", "ML", "mL"]
+    if message.author.id == "132694825454665728":  # Me
+        ret += ["baka"]
+    return ret
 
-bot = commands.Bot(command_prefix=['ml ', 'ML ', 'Ml ', 'mL ', 'akane', 'Akane', '<@202989516904988673> ', '<@!202989516904988673> '], description=description, pm_help=True)
-
+bot = commands.Bot(command_prefix=get_pre, description=description, pm_help=True)
 
 @bot.event
 async def on_ready():
@@ -37,55 +44,61 @@ async def on_ready():
             print('Failed to load extension {}\n{}'.format(extension, exc))
             traceback.print_exc()
 
-@bot.event
-async def on_member_join(member):
-    if not member.server.id == "169056767219597312":
-        return
-    announce = member.server.get_channel("198237266202591232")
-    await bot.send_message(announce, "@here We have a new member: " + member.name + " (id: " + member.id + ")")
+# MOVED TO muvluv.py
+# @bot.event
+# async def on_member_join(member):
+#     if not member.server.id == "169056767219597312":
+#         return
+#     announce = member.server.get_channel("198237266202591232")
+#     await bot.send_message(announce, "@here We have a new member: " + member.name + " (id: " + member.id + ")")
 
 
-@bot.event
-async def on_message(message):
-    save()
-    await bot.process_commands(message)
+# WTF?
+# @bot.event
+# async def on_message(message):
+#     save()
+#     await bot.process_commands(message)
 
 
-def is_owner():
-    return commands.check(lambda ctx: ctx.message.author.id == "132694825454665728")
+# MOVED TO /utils/checks.py
+# def is_owner():
+#     return commands.check(lambda ctx: ctx.message.author.id == "132694825454665728")
 
 
-@bot.command(pass_context=True, hidden=True)
-@is_owner()
-async def debug(ctx, *, code: str):
-    """Extremely unsafe eval command."""
-    code = code.strip("` ")
-    python = "```python\n{0}\n```"
-    result = None
-
-    try:
-        result = eval(code)
-    except Exception as error:
-        await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
-        return
-
-    if asyncio.iscoroutine(result):
-        result = await result
-
-    await bot.say(python.format(result))
-
-
-@bot.command(pass_context=True, hidden=True)
-@is_owner()
-async def die(ctx, hidden=True):
-    await bot.say("Bye-bye")
-    await bot.logout()
+# MOVED TO owner.py
+# @bot.command(pass_context=True, hidden=True)
+# @is_owner()
+# async def debug(ctx, *, code: str):
+#     """Extremely unsafe eval command."""
+#     code = code.strip("` ")
+#     python = "```python\n{0}\n```"
+#     result = None
+#
+#     try:
+#         result = eval(code)
+#     except Exception as error:
+#         await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
+#         return
+#
+#     if asyncio.iscoroutine(result):
+#         result = await result
+#
+#     await bot.say(python.format(result))
 
 
-def save():
-    if bot.shit is not "":
-        with open("bot_shit.json", "w") as c:
-            json.dump(bot.shit, c)
+# MOVED TO owner.py
+# @bot.command(pass_context=True, hidden=True)
+# @is_owner()
+# async def die(ctx, hidden=True):
+#     await bot.say("Bye-bye")
+#     await bot.logout()
+
+
+# Gotta move this to a task or something not as stupid
+# def save():
+#     if bot.shit is not "":
+#         with open("bot_shit.json", "w") as c:
+#             json.dump(bot.shit, c)
 
 
 with open("bot_shit.json", "r") as b:
