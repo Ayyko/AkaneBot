@@ -19,9 +19,9 @@ class MuvLuv:
         if member.server.id == self.ml_server:
             await self.bot.send_message(self.ml_announce, "🔨🔨 Member banned: {a.name}, ({a.id})".format(a=member))
 
-    async def on_member_unban(self, member):
-        if member.server.id == self.ml_server:
-            await self.bot.send_message(self.ml_announce, "Member unbanned: {a.name}, ({a.id})".format(a=member))
+    async def on_member_unban(self, server, user):
+        if server.id == self.ml_server:
+            await self.bot.send_message(self.ml_announce, "Member unbanned: {a.name}, ({a.id})".format(a=user))
 
 
 def setup(bot):
