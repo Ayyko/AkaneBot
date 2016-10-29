@@ -5,7 +5,7 @@ class MuvLuv:
     def __init__(self, bot):
         self.bot = bot
         self.ml_server = "169056767219597312"
-        self.ml_announce = "235502028930023424"
+        self.ml_announce = self.bot.get_channel("235502028930023424")
 
     async def on_member_join(self, member):
         if member.server.id == self.ml_server:
