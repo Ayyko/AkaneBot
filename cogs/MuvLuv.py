@@ -42,7 +42,7 @@ class MuvLuv:
         await self.bot.send_message(self.ml_announce, "{} in #{} edited a message:\n ```diff\n{}```".format(after.author.mention, after.channel.name, ret))
 
     async def on_message_delete(self, message):
-        if message.server != self.ml_server:
+        if message.server.id != self.ml_server:
             return
         if message.channel == self.ml_announce:
             return
