@@ -53,12 +53,14 @@ class Search:
         num_error = 0
         if query.split()[0].isdigit():
             num = int(query.split()[0])
+            if num < 1:
+                query += "+{}".format(num)
             if num > 10:
                 num_error = 2
                 num = 10
-            if num > 3 and not ctx.message.author.id == checks.owner_id:
+            if num > 5 and not ctx.message.author.id == checks.owner_id:
                 num_error = 1
-                num = 3
+                num = 5  # TODO:
             query = "+".join(query.split()[1:])
         self.params['q'] = urllib.parse.quote_plus(query, encoding='utf-8', errors='replace')
         async with aiohttp.ClientSession() as session:
