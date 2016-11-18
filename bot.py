@@ -18,7 +18,7 @@ It can probably do said stuff, potentially even things.
 Check out the source at https://github.com/Ayyko/AkaneBot
 Made by Ako using discord.py version ''' + discord.__version__
 
-startup_extensions = ["cogs.MuvLuv", "cogs.owner", "cogs.search"]
+startup_extensions = ["cogs.MuvLuv", "cogs.owner", "cogs.search", "cogs.repl"]
 
 async def get_pre(self, message):
     ret = [message.server.me.mention, "Akane ", "akane ", "(•ω•) "]
