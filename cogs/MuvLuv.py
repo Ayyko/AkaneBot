@@ -34,12 +34,15 @@ class MuvLuv:
         ret = "-{}\n+{}".format(before.clean_content, after.clean_content)
         if len(ret) > 1850:
             async with aiohttp.ClientSession() as session:
-                async with session.post("hastebin.com/documents", ret) as r:
+                async with session.post("http://hastebin.com/documents", data=ret) as r:
                     resp = await r.json()
-                    hb_url = "http://hastebin.com/{}".format(resp["key"])
-            await self.bot.send_message(self.ml_announce, "{} in #{} edited a pretty big message, hastebin link: {}".format(after.author.mention, after.channel.name, hb_url))
+                    try:
+                        hb_url = "http://hastebin.com/{}".format(resp["key"])
+                    except KeyError:
+                        hb_url = "There was an error uploading to hb: {}".format(resp)
+            await self.bot.send_message(self.ml_announce, "{} in #{} edited a pretty big message, hastebin link: {}".format(str(after.author), after.channel.name, hb_url))
             return
-        await self.bot.send_message(self.ml_announce, "{} in #{} edited a message:\n ```diff\n{}```".format(after.author.mention, after.channel.name, ret))
+        await self.bot.send_message(self.ml_announce, "{} in #{} edited a message:\n ```diff\n{}```".format(str(after.author), after.channel.name, ret))
 
     async def on_message_delete(self, message):
         if message.server.id != self.ml_server:
@@ -48,14 +51,16 @@ class MuvLuv:
             return
         if len(message.clean_content) > 1900:
             async with aiohttp.ClientSession() as session:
-                async with session.post() as r:
+                async with session.post("http://hastebin.com/documents", data=message.clean_content) as r:
                     resp = await r.json()
-                    hb_url = "http://hastebin.com/{}".format(resp["key"])
-            await self.bot.send_message(self.ml_announce, "{} in #{} deleted a pretty big message, hastebin link: {}".format(message.author.mention, message.channel.name, hb_url))
+                    try:
+                        hb_url = "http://hastebin.com/{}".format(resp["key"])
+                    except KeyError:
+                        hb_url = "There was an error uploading to hb: {}".format(resp)
+            await self.bot.send_message(self.ml_announce, "{} in #{} deleted a pretty big message, hastebin link: {}".format(str(message.author), message.channel.name, hb_url))
             return
-        await self.bot.send_message(self.ml_announce, "{} in #{} deleted a message:\n```{}```".format(message.author.mention, message.channel.name, message.clean_content))
+        await self.bot.send_message(self.ml_announce, "{} in #{} deleted a message:\n```{}```".format(str(message.author), message.channel.name, message.clean_content))
 
-# HASTEBIN NOTES :  post to hastebin.com/documents     you get a response {'key': 'ukemuguzaf'}
 
 def setup(bot):
     bot.add_cog(MuvLuv(bot))
