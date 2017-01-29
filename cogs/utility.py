@@ -13,23 +13,29 @@ class Utility:
     async def whois(self, ctx, target: discord.Member=None):
         target = target or ctx.message.author
         roles = ", ".join([r.name.replace('@', '@\u200b') for r in target.roles])
-
+        default = False
+        if target.avatar:
+            url = target.avatar_url
+        else:
+            url = target.default_avatar_url
+            default = True
         with aiohttp.ClientSession() as session:
-            async with session.get(target.avatar_url) as resp:
+            async with session.get(url) as resp:
                 idk = await resp.read()
                 img = Image.open(io.BytesIO(idk)).convert("RGB")
-                # print(img.getcolors(img.size[0] * img.size[1]))
-                # print(sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1])
-                color = sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1][1][1]
-                # print(color)
+                print(img.getcolors(img.size[0] * img.size[1]))
+                print(sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1])
+                color = sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1][not default][1]
+                print(color)
                 # print(img.getpixel((0,0)))
                 # print(img.getpixel((0,1)))
 
                 colorint = (color[0] * 65536) + (color[1] * 256) + color[2]  # (R*65536)+(G*256)+B
 
-        embed = discord.Embed()
-        embed.set_author(name=str(target), icon_url=target.avatar_url)
 
+
+        embed = discord.Embed()
+        embed.set_author(name=str(target), icon_url=target.avatar_url if target.avatar else target.default_avatar_url)
         embed.add_field(name="Nickname", value=target.display_name if target.display_name != target.name else "None")
         embed.add_field(name="Status", value=target.status)
         embed.add_field(name="Account Created", value=target.created_at)
