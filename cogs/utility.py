@@ -3,6 +3,7 @@ from cogs.utils import checks
 import discord
 from PIL import Image
 import aiohttp
+import io
 
 class Utility:
     def __init__(self, bot):
@@ -15,17 +16,27 @@ class Utility:
 
         with aiohttp.ClientSession() as session:
             async with session.get(target.avatar_url) as resp:
-                img = Image.open(resp.read())
-                color = sorted(img.getcolors(), key=lambda m: m[0])[0][1]
+                idk = await resp.read()
+                img = Image.open(io.BytesIO(idk)).convert("RGB")
+                # print(img.getcolors(img.size[0] * img.size[1]))
+                # print(sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1])
+                color = sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1][1][1]
+                # print(color)
+                # print(img.getpixel((0,0)))
+                # print(img.getpixel((0,1)))
+
                 colorint = (color[0] * 65536) + (color[1] * 256) + color[2]  # (R*65536)+(G*256)+B
 
         embed = discord.Embed()
-        embed.set_author(str(target), icon_url=target.avatar_url)
+        embed.set_author(name=str(target), icon_url=target.avatar_url)
 
-        embed.add_field("Nickname", target.display_name if target.display_name != target.name else "None")
-        embed.add_field("Status", target.status)
-        embed.add_field("Account Created", target.created_at)
-        embed.add_field("Joined", target.joined_at)
-        embed.add_field("Roles", roles)
+        embed.add_field(name="Nickname", value=target.display_name if target.display_name != target.name else "None")
+        embed.add_field(name="Status", value=target.status)
+        embed.add_field(name="Account Created", value=target.created_at)
+        embed.add_field(name="Joined", value=target.joined_at)
+        embed.add_field(name="Roles", value=roles)
         embed.color = colorint
+        await self.bot.say("", embed=embed)
 
+def setup(bot):
+    bot.add_cog(Utility(bot))
