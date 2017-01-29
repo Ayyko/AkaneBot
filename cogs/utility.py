@@ -23,10 +23,10 @@ class Utility:
             async with session.get(url) as resp:
                 idk = await resp.read()
                 img = Image.open(io.BytesIO(idk)).convert("RGB")
-                print(img.getcolors(img.size[0] * img.size[1]))
-                print(sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1])
+                # print(img.getcolors(img.size[0] * img.size[1]))
+                # print(sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1])
                 color = sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1][not default][1]
-                print(color)
+                # print(color)
                 # print(img.getpixel((0,0)))
                 # print(img.getpixel((0,1)))
 
