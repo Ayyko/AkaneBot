@@ -25,7 +25,7 @@ async def get_pre(self, message):
     if message.server.id == "169056767219597312":
         ret += ["ml ", "Ml ", "ML ", "mL "]
     if message.author.id == "132694825454665728":  # Me
-        ret += ["baka "]
+        ret += ["baka ", "bakane "]
     return ret
 
 bot = commands.Bot(command_prefix=get_pre, description=description, pm_help=True)
