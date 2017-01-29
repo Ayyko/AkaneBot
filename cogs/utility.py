@@ -10,7 +10,7 @@ class Utility:
         self.bot = bot
 
     @commands.command(pass_context=True)
-    async def whois(self, ctx, target: discord.Member=None):
+    async def whois(self, ctx, *, target: discord.Member=None):
         target = target or ctx.message.author
         roles = ", ".join([r.name.replace('@', '@\u200b') for r in target.roles])
         default = False
