@@ -25,7 +25,12 @@ class Utility:
                 img = Image.open(io.BytesIO(idk)).convert("RGB")
                 # print(img.getcolors(img.size[0] * img.size[1]))
                 # print(sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1])
-                color = sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1][not default][1]
+                colors = sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1]
+                color = colors[not default][1]
+                for c in colors:
+                    if not(180>c[1][0] and 180>c[1][1] and 180>c[1][2]) and not(c[1][0]>50 and c[1][1]>50 and c[1][2]>50):
+                        color = c[1]
+                        break
                 # print(color)
                 # print(img.getpixel((0,0)))
                 # print(img.getpixel((0,1)))
