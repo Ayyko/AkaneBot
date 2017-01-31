@@ -30,8 +30,7 @@ class Search:
         async with aiohttp.ClientSession() as session:
             async with session.get(self.base_url + "?key={}&cx={}&q={}&safe=high".format(self.params['key'], self.params['cx'], self.params['q'])) as r:  # built in aiohtttp params thing didn't work so we got this cancer
                 results = await r.json()  # TODO: make safe search toggleable/have a flag for it/smth
-
-        if not results["error"]["errors"]:
+        try:
             if results["searchInformation"]["totalResults"] is not "0":
                 if int(results["searchInformation"]["totalResults"]) < num:
                     num = int(results["searchInformation"]["totalResults"])
@@ -49,11 +48,17 @@ class Search:
             else:
                 await self.bot.say("No results found for {}".format(query.replace("@here", "@​here").replace("@everyone", "@​everyone")))
             # print(json.dumps(results))
-        else:
-            await self.bot.say("API returned error(s):")
-            for error in results["error"]["errors"]:
-                await self.bot.say("`" + error["domain"] + ": " + error["reason"] + "`")
-                print(error)
+        except KeyError:
+            try:
+                results["error"]["errors"]
+                await self.bot.say("API returned error(s):")
+                for error in results["error"]["errors"]:
+                    await self.bot.say("`" + error["domain"] + ": " + error["reason"] + "`")
+                    print(error)
+            except KeyError as e:
+                await self.bot.say("An unknown error has occurred, tell Ako you broke it")
+                print(e)
+
 
     @commands.command(pass_context=True)
     async def search(self, ctx, *, query):
@@ -79,7 +84,7 @@ class Search:
             async with session.get(self.base_url + "?key={}&cx={}&q={}&safe=high".format(self.params['key'], self.params['cx'], self.params['q'])) as r:  # built in aiohtttp params thing didn't work so we got this cancer
                 results = await r.json()
 
-        if not results["error"]["errors"]:
+        try:
             if results["searchInformation"]["totalResults"] is not "0":
                 if int(results["searchInformation"]["totalResults"]) < num:
                     num = int(results["searchInformation"]["totalResults"])
@@ -97,11 +102,16 @@ class Search:
             else:
                 await self.bot.say("No results found for {}".format(query.replace("@here", "@​here").replace("@everyone", "@​everyone")))
 
-        else:
-            await self.bot.say("API returned error(s):")
-            for error in results["error"]["errors"]:
-                await self.bot.say("`" + error["domain"] + ": " + error["reason"] + "`")
-                print(error)
+        except KeyError:
+            try:
+                results["error"]["errors"]
+                await self.bot.say("API returned error(s):")
+                for error in results["error"]["errors"]:
+                    await self.bot.say("`" + error["domain"] + ": " + error["reason"] + "`")
+                    print(error)
+            except KeyError as e:
+                await self.bot.say("An unknown error has occurred, tell Ako you broke it")
+                print(e)
 
     async def emoji_get(self, i):
         emoji_list = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:', ':keycap_ten:']
