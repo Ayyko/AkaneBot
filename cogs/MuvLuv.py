@@ -1,12 +1,32 @@
 import discord
 from discord.ext import commands
 import aiohttp
+import asyncio
+from .utils.helpers import TimeParser
+from .utils import checks
 
 class MuvLuv:
     def __init__(self, bot):
         self.bot = bot
         self.ml_server = "169056767219597312"
         self.ml_announce = self.bot.get_channel("235502028930023424")
+
+    @commands.command(pass_context=True)
+    @checks.has_perm("kick_members")
+    async def mute(self, ctx, target: discord.Member, time: TimeParser=0, *, reason=""):
+        if ctx.message.server.id != self.ml_server:
+            return
+        if time.seconds < 1:
+            self.bot.reply("Please use a valid time")
+            return
+        mute_role = discord.utils.get(ctx.message.server.roles, id="203241764260151296")
+        await self.bot.add_roles(target, mute_role)
+        ret = " | Reason: " + reason if reason else ""
+        await self.bot.send_message(self.ml_announce, "athere {} muted {} for {} seconds".format(ctx.message.author.mention, target.mention, time.seconds) + ret)
+
+        await asyncio.sleep(time.seconds)
+        await self.bot.remove_roles(target, mute_role)
+        await self.bot.send_message(self.ml_announce, "{} has been unmuted".format(target.mention))
 
     async def on_member_join(self, member):
         if member.server.id == self.ml_server:
