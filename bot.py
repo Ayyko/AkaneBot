@@ -21,8 +21,8 @@ Made by Ako using discord.py version ''' + discord.__version__
 startup_extensions = ["cogs.MuvLuv", "cogs.owner", "cogs.search", "cogs.repl", "cogs.utility"]
 
 async def get_pre(self, message):
-    ret = [message.server.me.mention, "Akane ", "akane ", "(•ω•) "]
-    if message.server.id == "169056767219597312":
+    ret = [commands.when_mentioned(self, message), "Akane ", "akane ", "(•ω•) "]
+    if message.server and message.server.id == "169056767219597312":
         ret += ["ml ", "Ml ", "ML ", "mL "]
     if message.author.id == "132694825454665728":  # Me
         ret += ["baka ", "bakane "]
