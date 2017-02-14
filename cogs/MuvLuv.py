@@ -22,7 +22,7 @@ class MuvLuv:
         mute_role = discord.utils.get(ctx.message.server.roles, id="203241764260151296")
         await self.bot.add_roles(target, mute_role)
         ret = " | Reason: " + reason if reason else ""
-        await self.bot.send_message(self.ml_announce, "athere {} muted {} for {} seconds".format(ctx.message.author.mention, target.mention, time.seconds) + ret)
+        await self.bot.send_message(self.ml_announce, "@here {} muted {} for {} seconds".format(ctx.message.author.mention, target.mention, time.seconds) + ret)
 
         await asyncio.sleep(time.seconds)
         await self.bot.remove_roles(target, mute_role)
