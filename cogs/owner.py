@@ -19,9 +19,9 @@ class Owner:
             'bot': self.bot,
             'ctx': ctx,
             'message': ctx.message,
-            'server': ctx.message.server,
-            'channel': ctx.message.channel,
-            'author': ctx.message.author
+            'guild': ctx.guild,
+            'channel': ctx.channel,
+            'author': ctx.author
         }
 
         env.update(globals())
@@ -31,15 +31,15 @@ class Owner:
             if inspect.isawaitable(result):
                 result = await result
         except Exception as e:
-            await self.bot.say(python.format(type(e).__name__ + ': ' + str(e)))
+            await ctx.send(python.format(type(e).__name__ + ': ' + str(e)))
             return
 
-        await self.bot.say(python.format(result))
+        await ctx.send(python.format(result))
 
-    @commands.command(pass_context=True, hidden=True)
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def die(self, ctx, hidden=True):
-        await self.bot.say("Bye-bye")
+        await ctx.send("Bye-bye")
         await self.bot.logout()
 
 
