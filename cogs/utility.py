@@ -9,7 +9,7 @@ class Utility:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def whois(self, ctx, *, target: discord.Member=None):
         target = target or ctx.message.author
         roles = ", ".join([r.name.replace('@', '@\u200b') for r in target.roles])
@@ -47,7 +47,7 @@ class Utility:
         embed.add_field(name="Joined", value=target.joined_at)
         embed.add_field(name="Roles", value=roles)
         embed.color = colorint
-        await self.bot.say("", embed=embed)
+        await ctx.send("", embed=embed)
 
 def setup(bot):
     bot.add_cog(Utility(bot))

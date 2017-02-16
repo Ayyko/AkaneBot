@@ -11,7 +11,7 @@ class Search:
         self.params = {'cx': self.bot.shit['google']['cx'], 'key': self.bot.shit['google']['key'], 'q': ''}
         self.nsfw = False  # Doesn't do anything yet
 
-    @commands.command(aliases=["listsearch", "list search"], pass_context=True)
+    @commands.command(aliases=["listsearch", "list search"])
     async def lsearch(self, ctx, *, query):
         """Google search that returns a list of links to results.
 
@@ -44,19 +44,19 @@ class Search:
                 elif num_error == 2:
                     ret += "Results have been limited to {}".format(num)
                 ret = "Results for `" + query.replace("@here", "@​here").replace("@everyone", "@​everyone") + "`\n" + ret.replace("@here", "@​here").replace("@everyone", "@​everyone")
-                await self.bot.say(ret[:1999])
+                await ctx.send(ret[:1999])
             else:
-                await self.bot.say("No results found for {}".format(query.replace("@here", "@​here").replace("@everyone", "@​everyone")))
+                await ctx.send("No results found for {}".format(query.replace("@here", "@​here").replace("@everyone", "@​everyone")))
             # print(json.dumps(results))
         except KeyError:
             try:
                 results["error"]["errors"]
-                await self.bot.say("API returned error(s):")
+                await ctx.send("API returned error(s):")
                 for error in results["error"]["errors"]:
-                    await self.bot.say("`" + error["domain"] + ": " + error["reason"] + "`")
+                    await ctx.send("`" + error["domain"] + ": " + error["reason"] + "`")
                     print(error)
             except KeyError as e:
-                await self.bot.say("An unknown error has occurred, tell Ako you broke it")
+                await ctx.send("An unknown error has occurred, tell Ako you broke it")
                 print(e)
 
 
@@ -98,19 +98,19 @@ class Search:
                 if num_error == 2:
                     ret += "Results have been limited to 10 because google only gives me 10 at a time"
                 ret = "Results for `" + query.replace("@here", "@​here").replace("@everyone", "@​everyone") + "`\n" + ret.replace("@here", "@​here").replace("@everyone", "@​everyone")
-                await self.bot.say(ret[:1999])
+                await ctx.send(ret[:1999])
             else:
-                await self.bot.say("No results found for {}".format(query.replace("@here", "@​here").replace("@everyone", "@​everyone")))
+                await ctx.send("No results found for {}".format(query.replace("@here", "@​here").replace("@everyone", "@​everyone")))
 
         except KeyError:
             try:
                 results["error"]["errors"]
-                await self.bot.say("API returned error(s):")
+                await ctx.send("API returned error(s):")
                 for error in results["error"]["errors"]:
-                    await self.bot.say("`" + error["domain"] + ": " + error["reason"] + "`")
+                    await ctx.send("`" + error["domain"] + ": " + error["reason"] + "`")
                     print(error)
             except KeyError as e:
-                await self.bot.say("An unknown error has occurred, tell Ako you broke it")
+                await ctx.send("An unknown error has occurred, tell Ako you broke it")
                 print(e)
 
     async def emoji_get(self, i):

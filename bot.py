@@ -12,7 +12,6 @@ import traceback
 # handler = logging.StreamHandler(stream=sys.stdout)
 # logger.addHandler(handler)
 
-
 description = '''A bot made for stuff and things.
 It can probably do said stuff, potentially even things.
 Check out the source at https://github.com/Ayyko/AkaneBot
@@ -22,9 +21,9 @@ startup_extensions = ["cogs.MuvLuv", "cogs.owner", "cogs.search", "cogs.repl", "
 
 async def get_pre(self, message):
     ret = [commands.when_mentioned(self, message), "Akane ", "akane ", "(•ω•) "]
-    if message.server and message.server.id == "169056767219597312":
+    if message.guild and message.guild.id == 169056767219597312:
         ret += ["ml ", "Ml ", "ML ", "mL "]
-    if message.author.id == "132694825454665728":  # Me
+    if message.author.id == 132694825454665728:  # Me
         ret += ["baka ", "bakane "]
     return ret
 
@@ -44,62 +43,6 @@ async def on_ready():
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
             traceback.print_exc()
-
-# MOVED TO muvluv.py
-# @bot.event
-# async def on_member_join(member):
-#     if not member.server.id == "169056767219597312":
-#         return
-#     announce = member.server.get_channel("198237266202591232")
-#     await bot.send_message(announce, "@here We have a new member: " + member.name + " (id: " + member.id + ")")
-
-
-# WTF?
-# @bot.event
-# async def on_message(message):
-#     save()
-#     await bot.process_commands(message)
-
-
-# MOVED TO /utils/checks.py
-# def is_owner():
-#     return commands.check(lambda ctx: ctx.message.author.id == "132694825454665728")
-
-
-# MOVED TO owner.py
-# @bot.command(pass_context=True, hidden=True)
-# @is_owner()
-# async def debug(ctx, *, code: str):
-#     """Extremely unsafe eval command."""
-#     code = code.strip("` ")
-#     python = "```python\n{0}\n```"
-#     result = None
-#
-#     try:
-#         result = eval(code)
-#     except Exception as error:
-#         await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
-#         return
-#
-#     if asyncio.iscoroutine(result):
-#         result = await result
-#
-#     await bot.say(python.format(result))
-
-
-# MOVED TO owner.py
-# @bot.command(pass_context=True, hidden=True)
-# @is_owner()
-# async def die(ctx, hidden=True):
-#     await bot.say("Bye-bye")
-#     await bot.logout()
-
-
-# Gotta move this to a task or something not as stupid
-# def save():
-#     if bot.shit is not "":
-#         with open("bot_shit.json", "w") as c:
-#             json.dump(bot.shit, c)
 
 
 with open("bot_shit.json", "r") as b:

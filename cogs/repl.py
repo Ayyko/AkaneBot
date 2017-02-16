@@ -24,7 +24,7 @@ class REPL:
     def get_syntax_error(self, e):
         return '```py\n{0.text}{1:>{0.offset}}\n{2}: {0}```'.format(e, '^', type(e).__name__)
 
-    @commands.command(pass_context=True, hidden=True)
+    @commands.command(hidden=True, enabled=False)  # disabled until I steal someone's rewrite version cuz I'm lazy
     @checks.is_owner()
     async def repl(self, ctx):
         """A repl
@@ -48,7 +48,7 @@ class REPL:
         self.sessions.add(msg.channel.id)
         await self.bot.say('Enter code to execute or evaluate. `exit()` or `quit` to exit.')
         while True:
-            response = await self.bot.wait_for_message(author=msg.author, channel=msg.channel,
+            response = await self.bot.wait_for("message", author=msg.author, channel=msg.channel,
                                                        check=lambda m: m.content.startswith('`'))
 
             cleaned = self.cleanup_code(response.content)
