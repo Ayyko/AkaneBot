@@ -7,6 +7,7 @@ import inspect
 from contextlib import redirect_stdout
 import io
 
+
 class REPL:
     def __init__(self, bot):
         self.bot = bot
@@ -106,6 +107,7 @@ class REPL:
                 pass
             except discord.HTTPException as e:
                 await self.bot.send_message(msg.channel, 'Unexpected error: `{}`'.format(e))
+
 
 def setup(bot):
     bot.add_cog(REPL(bot))

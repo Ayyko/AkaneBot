@@ -3,6 +3,7 @@ from discord.ext import commands
 from cogs.utils import checks
 import inspect
 
+
 class Owner:
     def __init__(self, bot):
         self.bot = bot
@@ -41,7 +42,6 @@ class Owner:
     async def die(self, ctx, hidden=True):
         await ctx.send("Bye-bye")
         await self.bot.logout()
-
 
 
 def setup(bot):

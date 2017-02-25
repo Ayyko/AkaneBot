@@ -5,6 +5,7 @@ from PIL import Image
 import aiohttp
 import io
 
+
 class Utility:
     def __init__(self, bot):
         self.bot = bot
@@ -48,6 +49,7 @@ class Utility:
         embed.add_field(name="Roles", value=roles)
         embed.color = colorint
         await ctx.send("", embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
