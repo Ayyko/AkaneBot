@@ -4,6 +4,7 @@ import discord
 from PIL import Image
 import aiohttp
 import io
+import random
 
 
 class Utility:
@@ -12,6 +13,7 @@ class Utility:
 
     @commands.command()
     async def whois(self, ctx, *, target: discord.Member=None):
+        """Returns information about a user"""
         target = target or ctx.message.author
         roles = ", ".join([r.name.replace('@', '@\u200b') for r in target.roles])
         default = False
@@ -38,8 +40,6 @@ class Utility:
 
                 colorint = (color[0] * 65536) + (color[1] * 256) + color[2]  # (R*65536)+(G*256)+B
 
-
-
         embed = discord.Embed()
         embed.set_author(name=str(target), icon_url=target.avatar_url if target.avatar else target.default_avatar_url)
         embed.add_field(name="Nickname", value=target.display_name if target.display_name != target.name else "None")
@@ -49,6 +49,14 @@ class Utility:
         embed.add_field(name="Roles", value=roles)
         embed.color = colorint
         await ctx.send("", embed=embed)
+
+    @commands.command()
+    async def flip(self, ctx, arg1: str, arg2: str, *, args=None):
+        choices = [arg1, arg2]
+        if args:
+            choices.extend(args.split())
+        choice = random.choice(choices)
+        await ctx.send(choice.replace("@", "@​​\u200B"))
 
 
 def setup(bot):
