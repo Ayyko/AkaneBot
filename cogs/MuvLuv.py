@@ -15,6 +15,7 @@ class MuvLuv:
     @commands.command()
     @checks.has_perm("kick_members")
     async def mute(self, ctx, target: discord.Member, time: TimeParser=0, *, reason=""):
+        """Mutes a member for [time], with an optional reason"""
         if ctx.guild.id != self.ml_guild:
             return
         if time.seconds < 1:
@@ -55,10 +56,10 @@ class MuvLuv:
         ret = "-{}\n+{}".format(before.clean_content, after.clean_content)
         if len(ret) > 1850:
             async with aiohttp.ClientSession() as session:
-                async with session.post("http://hastebin.com/documents", data=ret) as r:
+                async with session.post("https://hastebin.com/documents", data=ret) as r:
                     resp = await r.json()
                     try:
-                        hb_url = "http://hastebin.com/{}".format(resp["key"])
+                        hb_url = "https://hastebin.com/{}".format(resp["key"])
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
             await self.ml_announce.send("{} in #{} edited a pretty big message, hastebin link: {}".format(str(after.author), after.channel.name, hb_url))
@@ -72,10 +73,10 @@ class MuvLuv:
             return
         if len(message.clean_content) > 1900:
             async with aiohttp.ClientSession() as session:
-                async with session.post("http://hastebin.com/documents", data=message.clean_content) as r:
+                async with session.post("https://hastebin.com/documents", data=message.clean_content) as r:
                     resp = await r.json()
                     try:
-                        hb_url = "http://hastebin.com/{}".format(resp["key"])
+                        hb_url = "https://hastebin.com/{}".format(resp["key"])
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
             await self.ml_announce.send("{} in #{} deleted a pretty big message, hastebin link: {}".format(str(message.author), message.channel.name, hb_url))
