@@ -50,7 +50,7 @@ class Utility:
         embed.color = colorint
         await ctx.send("", embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=["choose", "choice"])
     async def flip(self, ctx, arg1: str, arg2: str, *, args=None):
         choices = [arg1, arg2]
         if args:
