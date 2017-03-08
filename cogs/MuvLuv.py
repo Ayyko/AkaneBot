@@ -11,6 +11,8 @@ class MuvLuv:
         self.bot = bot
         self.ml_guild = 169056767219597312
         self.ml_announce = self.bot.get_channel(235502028930023424)
+        self.ml_invite = "https://discord.gg/Zu9Dp2s"
+        self.auto_kicks = {}
 
     @commands.command()
     @checks.has_perm("kick_members")
@@ -28,11 +30,19 @@ class MuvLuv:
 
         await asyncio.sleep(time.seconds)
         await self.bot.remove_roles(target, mute_role)
-        await self.ml_announce.send_message(self.ml_announce, "{} has been unmuted".format(target.mention))
+        await self.ml_announce.send("{} has been unmuted".format(target.mention))
 
     async def on_member_join(self, member):
         if member.guild.id == self.ml_guild:
             await self.ml_announce.send("@here Member joined: {a.name}, {a.mention}".format(a=member))
+
+            # Auto Modding stuff
+
+            if member.bot:
+                return
+            if str(member.id) in self.auto_kicks and self.auto_kicks[str(member.id)]:
+                # Could ignore this if it's old enough but that's too much effort, it will reset when reloaded anyway
+                await member.add_roles(*self.auto_kicks[str(member.id)])
 
     async def on_member_remove(self, member):
         if member.guild.id == self.ml_guild:
@@ -62,7 +72,7 @@ class MuvLuv:
                         hb_url = "https://hastebin.com/{}".format(resp["key"])
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
-            await self.ml_announce.send("{} in #{} edited a pretty big message, hastebin link: {}".format(str(after.author), after.channel.name, hb_url))
+            await self.ml_announce.send("{} in #{} edited a pretty big message, hastebin link: {}.diff".format(str(after.author), after.channel.name, hb_url))
             return
         await self.ml_announce.send("{} in #{} edited a message:\n ```diff\n{}```".format(str(after.author), after.channel.name, ret))
 
@@ -82,6 +92,31 @@ class MuvLuv:
             await self.ml_announce.send("{} in #{} deleted a pretty big message, hastebin link: {}".format(str(message.author), message.channel.name, hb_url))
             return
         await self.ml_announce.send("{} in #{} deleted a message:\n```{}```".format(str(message.author), message.channel.name, message.clean_content))
+
+    # anti raid/auto modding stuff
+
+    async def on_message(self, message):
+        if not message.guild or message.guild.id != self.ml_guild:
+            return
+        if message.author.bot:
+            return
+        if message.embeds and message.embeds[0].type == "rich" and self.is_embed_massive(message.embeds[0]):
+            await message.author.ban()
+            await self.ml_announce.send("@everyone I automatically banned a user {0} ({0.id}) for sending a large embed".format(message.author))
+        if message.mentions and len(message.mentions) > 10:
+            await message.delete()
+            self.auto_kicks[str(message.author.id)] = message.author.roles
+            await message.author.send("Hi, I have automatically kicked you from the Muv-Luv Fans server for having more than 10 mentions in a single message.\nThis is an anti-spam "
+                                      "measure and was preformed automatically, please join back if this was not malicious.\n{}".format(self.ml_invite))  # I have to send this before the kick to share a server with them.
+            await message.author.kick()
+
+            await self.ml_announce.send("@here I automatically kicked a user {0} ({0.id}) for sending a message with over 10 mentions".format(message.author))
+
+    def is_embed_massive(self, embed):
+        embed_size = len(embed.description) if embed.description else 0
+        for field in embed.fields:
+            embed_size += len(field.value)
+        return embed_size > 3000
 
 
 def setup(bot):
