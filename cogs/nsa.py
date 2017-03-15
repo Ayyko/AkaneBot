@@ -11,7 +11,6 @@ class NSA:
 
     async def on_message_delete(self, message):
         if not message.content:
-            print("no content")
             return
         if message.channel.id not in self.log_list:
             return
@@ -24,10 +23,8 @@ class NSA:
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
             await self.log_chan.send("{} in #{} ({}) deleted {}".format(str(message.author),message.channel.name, message.guild.name, hb_url))
-            print("long del")
             return
         await self.log_chan.send("{} in #{} ({}) deleted:\n```{}```".format(str(message.author), message.channel.name, message.guild.name, message.clean_content))
-        print("shor del")
 
     async def on_message_edit(self, before, after):
         if not after.content:
