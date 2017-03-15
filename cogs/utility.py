@@ -1,5 +1,4 @@
 from discord.ext import commands
-from cogs.utils import checks
 import discord
 from PIL import Image
 import aiohttp

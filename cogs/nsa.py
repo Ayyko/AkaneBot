@@ -1,6 +1,4 @@
 import aiohttp
-import discord
-from .utils import checks
 
 
 class NSA:
