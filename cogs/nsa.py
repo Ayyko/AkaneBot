@@ -29,6 +29,8 @@ class NSA:
     async def on_message_edit(self, before, after):
         if not after.content:
             return
+        if after.content == before.content:
+            return
         if after.channel.id not in self.log_list:
             return
         ret = "before:\n{}\nafter:\n{}".format(before.clean_content, after.clean_content)
