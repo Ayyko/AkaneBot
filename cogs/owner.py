@@ -11,7 +11,8 @@ class Owner:
     @commands.command(name="eval", pass_context=True, hidden=True)
     @checks.is_owner()
     async def _eval(self, ctx, *, code: str):
-        """Extremely unsafe eval command."""
+        """Extremely unsafe eval command.
+        Stolen from someone, Unknown original author"""
         code = code.strip('` ')
         python = '```py\n{}\n```'
         result = None
