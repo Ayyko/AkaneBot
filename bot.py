@@ -3,7 +3,6 @@ from discord.ext import commands
 import json
 import logging
 import sys
-import asyncio
 import cogs
 import traceback
 

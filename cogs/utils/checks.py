@@ -1,4 +1,3 @@
-import discord
 from discord.ext.commands import check
 
 owner_id = 132694825454665728
