@@ -70,10 +70,11 @@ class Utility:
             self.kick_votes[target.id] = [ctx.message.author.id]
         else:
             if ctx.message.author.id in self.kick_votes[target.id]:
-                return
+                self.kick_votes[target.id].remove(ctx.message.author.id)
+                await ctx.send("Your vote has been removed")
             self.kick_votes[target.id].append(ctx.message.author.id)
-        await ctx.send("There are now {} votes out of 10 needed to kick {}".format(len(self.kick_votes[target.id]), target))
-        if len(self.kick_votes[target.id]) > 9:
+        await ctx.send("There are now {} votes out of 5 needed to kick {}".format(len(self.kick_votes[target.id]), target))
+        if len(self.kick_votes[target.id]) > 4:
             await ctx.guild.kick(target)
             await ctx.send("{} has been kicked by popular vote".format(target))
             ret = "The members who voted for this were "
@@ -92,9 +93,12 @@ class Utility:
         if target.id not in self.ban_votes:
             self.ban_votes[target.id] = [ctx.message.author.id]
         else:
+            if ctx.message.author.id in self.kick_votes[target.id]:
+                self.kick_votes[target.id].remove(ctx.message.author.id)
+                await ctx.send("Your vote has been removed")
             self.ban_votes[target.id].append(ctx.message.author.id)
-        await ctx.send("There are now {} votes out of 15 needed to ban {}".format(len(self.ban_votes[target.id]), target))
-        if len(self.ban_votes[target.id]) > 14:
+        await ctx.send("There are now {} votes out of 7 needed to ban {}".format(len(self.ban_votes[target.id]), target))
+        if len(self.ban_votes[target.id]) > 6:
             await ctx.guild.ban(target)
             await ctx.send("{} has been banned by popular vote".format(target))
             ret = "The members who voted for this were "
