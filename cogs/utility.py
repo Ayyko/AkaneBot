@@ -12,7 +12,7 @@ class Utility:
         self.kick_votes = {}
         self.ban_votes = {}
 
-    @commands.command()
+    @commands.command(aliases=["who is"])
     async def whois(self, ctx, *, target: discord.Member=None):
         """Returns information about a user"""
         target = target or ctx.message.author
