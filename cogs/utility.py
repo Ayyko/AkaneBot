@@ -9,8 +9,6 @@ import random
 class Utility:
     def __init__(self, bot):
         self.bot = bot
-        self.kick_votes = {}
-        self.ban_votes = {}
 
     @commands.command(aliases=["who is"])
     async def whois(self, ctx, *, target: discord.Member=None):
@@ -43,11 +41,12 @@ class Utility:
 
         embed = discord.Embed()
         embed.set_author(name=str(target), icon_url=target.avatar_url if target.avatar else target.default_avatar_url)
+        embed.add_field(name="ID", value=str(target.id))
         embed.add_field(name="Nickname", value=target.display_name if target.display_name != target.name else "None")
         embed.add_field(name="Status", value=target.status)
-        embed.add_field(name="Account Created", value=target.created_at)
-        embed.add_field(name="Joined", value=target.joined_at)
-        embed.add_field(name="Roles", value=roles)
+        embed.add_field(name="Account Created", value=str(target.created_at)[:22])
+        embed.add_field(name="Joined", value=str(target.joined_at)[:22])
+        embed.add_field(name="Roles ({})".format(len(target.roles)), value=roles)
         embed.color = colorint
         await ctx.send("", embed=embed)
 
@@ -66,23 +65,23 @@ class Utility:
         if not target:
             await ctx.send("pick a real person (mention them if you have to)")
             return
-        if target.id not in self.kick_votes:
-            self.kick_votes[target.id] = [ctx.message.author.id]
+        if target.id not in self.bot.shit["votes"]["kick"]:
+            self.bot.shit["votes"]["kick"][target.id] = [ctx.message.author.id]
         else:
-            if ctx.message.author.id in self.kick_votes[target.id]:
-                self.kick_votes[target.id].remove(ctx.message.author.id)
+            if ctx.message.author.id in self.bot.shit["votes"]["kick"]:
+                self.bot.shit["votes"]["kick"][target.id].remove(ctx.message.author.id)
                 await ctx.send("Your vote has been removed")
             else:
-                self.kick_votes[target.id].append(ctx.message.author.id)
-        await ctx.send("There are now {} votes out of 5 needed to kick {}".format(len(self.kick_votes[target.id]), target))
-        if len(self.kick_votes[target.id]) > 4:
+                self.bot.shit["votes"]["kick"][target.id].append(ctx.message.author.id)
+        await ctx.send("There are now {} votes out of 5 needed to kick {}".format(len(self.bot.shit["votes"]["kick"][target.id]), target))
+        if len(self.bot.shit["votes"]["kick"][target.id]) > 4:
             await ctx.guild.kick(target)
             await ctx.send("{} has been kicked by popular vote".format(target))
             ret = "The members who voted for this were "
-            for voter in self.kick_votes[target.id]:
+            for voter in self.bot.shit["votes"]["kick"][target.id]:
                 ret += "<@{}> ".format(str(voter))
             await ctx.send(ret)
-            del self.kick_votes[target.id]
+            del self.self.bot.shit["votes"]["kick"][target.id]
 
     @commands.command()
     async def voteban(self, ctx, target: discord.Member):
@@ -91,24 +90,23 @@ class Utility:
         if not target:
             await ctx.send("pick a real person (mention them if you have to)")
             return
-        if target.id not in self.ban_votes:
-            self.ban_votes[target.id] = [ctx.message.author.id]
+        if target.id not in self.bot.shit["votes"]["ban"]:
+            self.bot.shit["votes"]["ban"][target.id] = [ctx.message.author.id]
         else:
-            if ctx.message.author.id in self.ban_votes[target.id]:
-                print(self.ban_votes)
-                self.ban_votes[target.id].remove(ctx.message.author.id)
+            if ctx.message.author.id in self.bot.shit["votes"]["ban"][target.id]:
+                self.bot.shit["votes"]["ban"][target.id].remove(ctx.message.author.id)
                 await ctx.send("Your vote has been removed")
             else:
-                self.ban_votes[target.id].append(ctx.message.author.id)
-        await ctx.send("There are now {} votes out of 7 needed to ban {}".format(len(self.ban_votes[target.id]), target))
-        if len(self.ban_votes[target.id]) > 6:
+                self.bot.shit["votes"]["ban"][target.id].append(ctx.message.author.id)
+        await ctx.send("There are now {} votes out of 7 needed to ban {}".format(len(self.bot.shit["votes"]["ban"][target.id]), target))
+        if len(self.bot.shit["votes"]["ban"][target.id]) > 6:
             await ctx.guild.ban(target)
             await ctx.send("{} has been banned by popular vote".format(target))
             ret = "The members who voted for this were "
-            for voter in self.ban_votes[target.id]:
+            for voter in self.bot.shit["votes"]["ban"][target.id]:
                 ret += "<@{}> ".format(str(voter))
             await ctx.send(ret)
-            del self.ban_votes[target.id]
+            del self.bot.shit["votes"]["ban"][target.id]
 
 
 def setup(bot):
