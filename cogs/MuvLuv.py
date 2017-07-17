@@ -111,8 +111,8 @@ class MuvLuv:
             await self.ml_announce.send("{} in #{} deleted a pretty big message, hastebin link: {}".format(str(message.author), message.channel.name, hb_url))
             return
         if deleter:
-            await self.ml_announce.send(
-                "in #{} a message by {} was deleted by {}:\n```{}```".format(message.channel.name, str(message.author), str(message.guild.get_member(deleter)), message.clean_content))
+            await self.ml_announce.send("in #{} a message by {} was deleted by {}:\n```{}```".format(message.channel.name, str(message.author), str(message.guild.get_member(deleter)), message.clean_content))
+            return
         await self.ml_announce.send("{} in #{} deleted a message:\n```{}```".format(str(message.author), message.channel.name, message.clean_content))
 
     # anti raid/auto modding stuff
