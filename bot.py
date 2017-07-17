@@ -55,3 +55,7 @@ with open("bot_shit.json", "r") as b:
 
 
 bot.run(bot.shit['token'])
+
+with open("bot_shit.json", "w") as b:
+    a = json.dumps(bot.shit)
+    b.write(a)
