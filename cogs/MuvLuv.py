@@ -41,7 +41,6 @@ class MuvLuv:
             if member.bot:
                 return
             if str(member.id) in self.auto_kicks and self.auto_kicks[str(member.id)]:
-                # Could ignore this if it's old enough but that's too much effort, it will reset when reloaded anyway
                 await member.add_roles(*self.auto_kicks[str(member.id)])
 
     async def on_member_remove(self, member):
@@ -51,6 +50,15 @@ class MuvLuv:
     async def on_member_ban(self, member):
         if member.guild.id == self.ml_guild:
             await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
+
+        # DAPI stuff for abal
+        if member.guild.id == 81384788765712384:
+            await asyncio.sleep(3)  # whatever time idk
+            async for entry in member.guild.audit_log(limit=3, action=discord.AuditLogAction.ban):
+                if entry.target.id != member.id:
+                    continue
+                else:
+                    print('{0.user} banned {0.target}'.format(entry))
 
     async def on_member_unban(self, guild, user):
         if guild.id == self.ml_guild:
@@ -81,6 +89,14 @@ class MuvLuv:
             return
         if message.channel == self.ml_announce:
             return
+        await asyncio.sleep(3)
+        deleter = None
+        async for entry in message.guild.audit_logs(limit=3, action=discord.AuditLogAction.message_delete):
+            if message.author.id != entry.target.id:
+                continue
+            else:
+                deleter = entry.user.id
+        #audit log check: if none then self delete(or bot), else get deleter
         if len(message.clean_content) > 1900:
             async with aiohttp.ClientSession() as session:
                 async with session.post("https://hastebin.com/documents", data=message.clean_content) as r:
@@ -89,8 +105,14 @@ class MuvLuv:
                         hb_url = "https://hastebin.com/{}".format(resp["key"])
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
+            if deleter:
+                await self.ml_announce.send("in #{} a pretty big message by {} was deleted by {}, hastebin link: {}".format(message.channel.name, str(message.author), str(message.guild.get_member(deleter)), hb_url))
+                return
             await self.ml_announce.send("{} in #{} deleted a pretty big message, hastebin link: {}".format(str(message.author), message.channel.name, hb_url))
             return
+        if deleter:
+            await self.ml_announce.send(
+                "in #{} a message by {} was deleted by {}:\n```{}```".format(message.channel.name, str(message.author), str(message.guild.get_member(deleter)), message.clean_content))
         await self.ml_announce.send("{} in #{} deleted a message:\n```{}```".format(str(message.author), message.channel.name, message.clean_content))
 
     # anti raid/auto modding stuff
