@@ -54,7 +54,7 @@ class MuvLuv:
         # DAPI stuff for abal
         if guild.id == 81384788765712384:
             await asyncio.sleep(3)  # whatever time idk
-            async for entry in member.guild.audit_log(limit=3, action=discord.AuditLogAction.ban):
+            async for entry in guild.audit_logs(limit=3, action=discord.AuditLogAction.ban):
                 if entry.target.id != member.id:
                     continue
                 else:
