@@ -96,7 +96,7 @@ class MuvLuv:
                 continue
             else:
                 deleter = entry.user.id
-        #audit log check: if none then self delete(or bot), else get deleter
+        # audit log check: if none then self delete(or bot), else get deleter
         if len(message.clean_content) > 1900:
             async with aiohttp.ClientSession() as session:
                 async with session.post("https://hastebin.com/documents", data=message.clean_content) as r:
@@ -122,9 +122,6 @@ class MuvLuv:
             return
         if message.author.bot:
             return
-        if message.embeds and message.embeds[0].type == "rich" and self.is_embed_massive(message.embeds[0]):
-            await message.author.ban()
-            await self.ml_announce.send("@everyone I automatically banned a user {0} ({0.id}) for sending a large embed".format(message.author))
         if message.mentions and len(message.mentions) > 10:
             await message.delete()
             self.auto_kicks[str(message.author.id)] = message.author.roles
@@ -133,12 +130,6 @@ class MuvLuv:
             await message.author.kick()
 
             await self.ml_announce.send("@here I automatically kicked a user {0} ({0.id}) for sending a message with over 10 mentions".format(message.author))
-
-    def is_embed_massive(self, embed):
-        embed_size = len(embed.description) if embed.description else 0
-        for field in embed.fields:
-            embed_size += len(field.value)
-        return embed_size > 3000
 
 
 def setup(bot):
