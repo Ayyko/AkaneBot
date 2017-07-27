@@ -1,6 +1,4 @@
 import random
-import sys
-import traceback
 import aiohttp
 import discord
 from discord.ext import commands
@@ -65,14 +63,6 @@ class Twitter:
                 if resp.status != 200:
                     raise commands.CommandError("Failed to get tweets")
                 return await resp.json()
-
-
-    async def on_command_error(self, error, ctx):
-        if type(error) is commands.BadArgument:
-            await ctx.send("Error!\nUser not found")
-        else:
-            print('Ignoring exception in command {}'.format(ctx.command), file=sys.stderr)
-            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
 
 def setup(bot):

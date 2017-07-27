@@ -30,7 +30,7 @@ class Utility:
                 colors = sorted(img.getcolors(img.size[0] * img.size[1]), key=lambda m: m[0])[::-1]
                 color = colors[not default][1]
                 for c in colors:
-                    if not(180<c[1][0] and 180<c[1][1] and 180<c[1][2]) and not(c[1][0]<50 and c[1][1]<50 and c[1][2]<50):
+                    if not(180 < c[1][0] and 180 < c[1][1] and 180 < c[1][2]) and not(c[1][0] < 50 and c[1][1] < 50 and c[1][2] < 50):
                         color = c[1]
                         break
                 # print(color)
@@ -81,7 +81,7 @@ class Utility:
             for voter in self.bot.shit["votes"]["kick"][target.id]:
                 ret += "<@{}> ".format(str(voter))
             await ctx.send(ret)
-            del self.self.bot.shit["votes"]["kick"][target.id]
+            del self.bot.shit["votes"]["kick"][target.id]
 
     @commands.command()
     async def voteban(self, ctx, target: discord.Member):

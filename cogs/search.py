@@ -59,7 +59,6 @@ class Search:
                 await ctx.send("An unknown error has occurred, tell Ako you broke it")
                 print(e)
 
-
     @commands.command(pass_context=True)
     async def search(self, ctx, *, query):
         """Google search

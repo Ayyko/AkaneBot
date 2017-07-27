@@ -20,7 +20,7 @@ class NSA:
                         hb_url = "https://hastebin.com/{}".format(resp["key"])
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
-            await self.log_chan.send("{} in #{} ({}) deleted {}".format(str(message.author),message.channel.name, message.guild.name, hb_url))
+            await self.log_chan.send("{} in #{} ({}) deleted {}".format(str(message.author), message.channel.name, message.guild.name, hb_url))
             return
         await self.log_chan.send("{} in #{} ({}) deleted:\n```{}```".format(str(message.author), message.channel.name, message.guild.name, message.clean_content))
 

@@ -28,6 +28,7 @@ async def get_pre(self, message):
 
 bot = commands.Bot(command_prefix=get_pre, description=description, pm_help=True)
 
+
 @bot.event
 async def on_ready():
     print('Logged in as')
@@ -42,6 +43,7 @@ async def on_ready():
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
             traceback.print_exc()
+
 
 @bot.command()
 @commands.cooldown(1, 60, commands.cooldowns.BucketType.channel)
