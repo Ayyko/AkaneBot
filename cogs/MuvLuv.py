@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import aiohttp
 import asyncio
+import datetime
 from .utils.helpers import TimeParser
 from .utils import checks
 
@@ -92,9 +93,7 @@ class MuvLuv:
         await asyncio.sleep(3)
         deleter = None
         async for entry in message.guild.audit_logs(limit=3, action=discord.AuditLogAction.message_delete):
-            if message.author.id != entry.target.id:
-                continue
-            else:
+            if abs(datetime.datetime.utcnow().timestamp() - discord.utils.snowflake_time(entry.id).timestamp()) < 8:
                 deleter = entry.user.id
         # audit log check: if none then self delete(or bot), else get deleter
         if len(message.clean_content) > 1900:
