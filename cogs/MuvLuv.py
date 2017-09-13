@@ -52,14 +52,6 @@ class MuvLuv:
         if guild.id == self.ml_guild:
             await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
 
-        # DAPI stuff for abal
-        if guild.id == 81384788765712384:
-            await asyncio.sleep(3)  # whatever time idk
-            async for entry in guild.audit_logs(limit=3, action=discord.AuditLogAction.ban):
-                if entry.target.id != member.id:
-                    continue
-                else:
-                    print('{0.user} banned {0.target}'.format(entry))
 
     async def on_member_unban(self, guild, user):
         if guild.id == self.ml_guild:
