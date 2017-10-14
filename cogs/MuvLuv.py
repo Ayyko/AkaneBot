@@ -15,7 +15,7 @@ class MuvLuv:
         self.ml_invite = "https://discord.gg/Zu9Dp2s"
         self.auto_kicks = {}
 
-    @commands.command()
+    @commands.command(enabled=False)
     @checks.has_perm("kick_members")
     async def mute(self, ctx, target: discord.Member, time: TimeParser=0, *, reason=""):
         """Mutes a member for [time], with an optional reason"""
@@ -51,7 +51,6 @@ class MuvLuv:
     async def on_member_ban(self, guild, member):
         if guild.id == self.ml_guild:
             await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
-
 
     async def on_member_unban(self, guild, user):
         if guild.id == self.ml_guild:
