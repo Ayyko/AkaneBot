@@ -5,12 +5,12 @@ class NSA:
     def __init__(self, bot):
         self.bot = bot
         self.log_chan = self.bot.get_channel(291681699043999754)
-        self.log_list = [203903748597219328, 227166775626825729, 133665049406472192, 132988506778632193, 205762560912261120, 273014576394665985]
+        self.blacklist = bot.shit["blacklist"]
 
     async def on_message_delete(self, message):
         if not message.content:
             return
-        if message.channel.id not in self.log_list:
+        if message.channel.id not in self.blacklist:
             return
         if len(message.clean_content) > 1900:
             async with aiohttp.ClientSession() as session:
@@ -29,7 +29,7 @@ class NSA:
             return
         if after.content == before.content:
             return
-        if after.channel.id not in self.log_list:
+        if after.channel.id not in self.blacklist:
             return
         ret = "before:\n{}\nafter:\n{}".format(before.clean_content, after.clean_content)
         if len(ret) > 1900:
