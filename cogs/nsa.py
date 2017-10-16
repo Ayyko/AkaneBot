@@ -10,7 +10,7 @@ class NSA:
     async def on_message_delete(self, message):
         if not message.content:
             return
-        if message.channel.id not in self.blacklist:
+        if message.channel.id in self.blacklist:
             return
         if len(message.clean_content) > 1900:
             async with aiohttp.ClientSession() as session:
@@ -29,7 +29,7 @@ class NSA:
             return
         if after.content == before.content:
             return
-        if after.channel.id not in self.blacklist:
+        if after.channel.id in self.blacklist:
             return
         ret = "before:\n{}\nafter:\n{}".format(before.clean_content, after.clean_content)
         if len(ret) > 1900:
