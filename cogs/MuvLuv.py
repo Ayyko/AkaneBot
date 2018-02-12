@@ -12,7 +12,7 @@ class MuvLuv:
         self.bot = bot
         self.ml_guild = 169056767219597312
         self.ml_announce = self.bot.get_channel(235502028930023424)
-        self.ml_invite = "https://discord.gg/Zu9Dp2s"
+        self.ml_invite = "https://discord.gg/8J7ANjx"
         self.auto_kicks = {}
 
     @commands.command(enabled=False)
