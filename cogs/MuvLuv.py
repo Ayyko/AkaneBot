@@ -37,12 +37,9 @@ class MuvLuv:
         if member.guild.id == self.ml_guild:
             await self.ml_announce.send("@here Member joined: {a.name}, {a.mention}".format(a=member))
 
-            # Auto Modding stuff
-
             if member.bot:
                 return
-            if str(member.id) in self.auto_kicks and self.auto_kicks[str(member.id)]:
-                await member.add_roles(*self.auto_kicks[str(member.id)])
+            await member.add_roles(discord.utils.get(member.guild.roles, id=588420756208353291))
 
     async def on_member_remove(self, member):
         if member.guild.id == self.ml_guild:
