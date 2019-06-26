@@ -111,7 +111,7 @@ class MuvLuv:
 
     # anti raid/auto modding stuff
 
-    async def on_raw_reaction_add(payload):
+    async def on_raw_reaction_add(self, payload):
         if payload.channel_id != 588421329590419456:
             return
         if payload.emoji.id == 593245492045938709:
