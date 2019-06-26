@@ -19,8 +19,8 @@ class MuvLuv:
                          358066125696794624: [discord.Object(id=173100534474080257),
                                               discord.Object(id=173104384392167425),
                                               discord.Object(id=188030091148656641)],  # valk
-                         593245458932170762: [discord.Object(id=360896131015639042)],    # lewd
-                         593245476703436802: [discord.Object(id=180756419174203393)]}    # spoiler
+                         593245068702253076: [discord.Object(id=360896131015639042)],    # lewd
+                         593245318888292383: [discord.Object(id=180756419174203393)]}    # spoiler
 
     @commands.command(enabled=False)
     @checks.has_perm("kick_members")
@@ -114,7 +114,7 @@ class MuvLuv:
     async def on_raw_reaction_add(self, payload):
         if payload.channel_id != 588421329590419456:
             return
-        if payload.emoji.id == 593245492045938709:
+        if payload.emoji.id == 593245363918602260:
             await asyncio.sleep(1)
             await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[588420756208353291])
         await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
