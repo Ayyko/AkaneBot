@@ -13,7 +13,14 @@ class MuvLuv:
         self.ml_guild = 169056767219597312
         self.ml_announce = self.bot.get_channel(235502028930023424)
         self.ml_invite = "https://discord.gg/8J7ANjx"
-        self.auto_kicks = {}
+        self.ml_roles = {358065563164999690: [discord.Object(id=188030091148656641)],        # cadet
+                         358066129345708032: [discord.Object(id=173104384392167425),
+                                              discord.Object(id=188030091148656641)],  # eishi
+                         358066125696794624: [discord.Object(id=173100534474080257),
+                                              discord.Object(id=173104384392167425),
+                                              discord.Object(id=188030091148656641)],  # valk
+                         593245458932170762: [discord.Object(id=360896131015639042)],    # lewd
+                         593245476703436802: [discord.Object(id=180756419174203393)]}    # spoiler
 
     @commands.command(enabled=False)
     @checks.has_perm("kick_members")
@@ -104,20 +111,13 @@ class MuvLuv:
 
     # anti raid/auto modding stuff
 
-    async def on_message(self, message):
-        if not message.guild or message.guild.id != self.ml_guild:
-            return
-        if message.author.bot:
-            return
-        if message.mentions and len(message.mentions) > 10:
-            await message.delete()
-            self.auto_kicks[str(message.author.id)] = message.author.roles
-            await message.author.send("Hi, I have automatically kicked you from the Muv-Luv Fans server for having more than 10 mentions in a single message.\nThis is an anti-spam "
-                                      "measure and was preformed automatically, please join back if this was not malicious.\n{}".format(self.ml_invite))  # I have to send this before the kick to share a server with them.
-            await message.author.kick()
-
-            await self.ml_announce.send("@here I automatically kicked a user {0} ({0.id}) for sending a message with over 10 mentions".format(message.author))
-
+async def on_raw_reaction_add(payload):
+    if payload.channel_id != 588421329590419456:
+        return
+    if payload.emoji.id == 593245492045938709:
+        await asyncio.sleep(1)
+        await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[588420756208353291])
+    await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
 
 def setup(bot):
     bot.add_cog(MuvLuv(bot))
