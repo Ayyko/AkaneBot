@@ -111,13 +111,13 @@ class MuvLuv:
 
     # anti raid/auto modding stuff
 
-async def on_raw_reaction_add(payload):
-    if payload.channel_id != 588421329590419456:
-        return
-    if payload.emoji.id == 593245492045938709:
-        await asyncio.sleep(1)
-        await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[588420756208353291])
-    await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
+    async def on_raw_reaction_add(payload):
+        if payload.channel_id != 588421329590419456:
+            return
+        if payload.emoji.id == 593245492045938709:
+            await asyncio.sleep(1)
+            await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[588420756208353291])
+        await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
 
 def setup(bot):
     bot.add_cog(MuvLuv(bot))
