@@ -6,7 +6,7 @@ import io
 import random
 
 
-class Utility(commands.Cog):
+class Utility:
     def __init__(self, bot):
         self.bot = bot
 

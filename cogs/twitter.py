@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 
-class Twitter(commands.Cog):
+class Twitter:
     def __init__(self, bot):
         self.bot = bot
         self.base_url = "https://api.twitter.com/1.1/"
