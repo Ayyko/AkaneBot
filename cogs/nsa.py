@@ -1,7 +1,8 @@
 import aiohttp
+from discord.ext import commands
 
 
-class NSA:
+class NSA(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.log_chan = self.bot.get_channel(291681699043999754)

@@ -4,7 +4,7 @@ import aiohttp
 import urllib
 
 
-class Search:
+class Search(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.base_url = "https://www.googleapis.com/customsearch/v1"

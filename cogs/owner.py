@@ -8,7 +8,7 @@ import asyncio
 from contextlib import redirect_stdout
 
 
-class Owner:
+class Owner(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 

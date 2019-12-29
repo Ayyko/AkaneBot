@@ -7,7 +7,7 @@ from .utils.helpers import TimeParser
 from .utils import checks
 
 
-class MuvLuv:
+class MuvLuv(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.ml_guild = 169056767219597312
@@ -40,6 +40,7 @@ class MuvLuv:
         await self.bot.remove_roles(target, mute_role)
         await self.ml_announce.send("{} has been unmuted".format(target.mention))
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         if member.guild.id == self.ml_guild:
             await self.ml_announce.send("@here Member joined: {a.name}, {a.mention}".format(a=member))
@@ -48,18 +49,22 @@ class MuvLuv:
                 return
             await member.add_roles(discord.utils.get(member.guild.roles, id=588420756208353291))
 
+    @commands.Cog.listener()
     async def on_member_remove(self, member):
         if member.guild.id == self.ml_guild:
             await self.ml_announce.send("Member left: {a.name}, ({a.id})".format(a=member))
 
+    @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
         if guild.id == self.ml_guild:
             await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
 
+    @commands.Cog.listener()
     async def on_member_unban(self, guild, user):
         if guild.id == self.ml_guild:
             await self.ml_announce.send("Member unbanned: {a.name}, ({a.id})".format(a=user))
 
+    @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         if before.guild.id != self.ml_guild:
             return
@@ -80,6 +85,7 @@ class MuvLuv:
             return
         await self.ml_announce.send("{} in #{} edited a message:\n ```diff\n{}```".format(str(after.author), after.channel.name, ret))
 
+    @commands.Cog.listener()
     async def on_message_delete(self, message):
         if message.guild.id != self.ml_guild:
             return
@@ -109,8 +115,8 @@ class MuvLuv:
             return
         await self.ml_announce.send("{} in #{} deleted a message:\n```{}```".format(str(message.author), message.channel.name, message.clean_content))
 
-    # anti raid/auto modding stuff
 
+    @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         if payload.channel_id != 588421329590419456:
             return

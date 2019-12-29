@@ -18,15 +18,7 @@ Made by Ako#0408(132694825454665728) using discord.py version ''' + discord.__ve
 
 startup_extensions = ["cogs.MuvLuv", "cogs.owner", "cogs.search", "cogs.utility", "cogs.twitter", "cogs.nsa"]
 
-async def get_pre(self, message):
-    ret = [commands.when_mentioned(self, message), "Akane ", "akane ", "(•ω•) "]
-    if message.guild and message.guild.id == 169056767219597312:
-        ret += ["ml ", "Ml ", "ML ", "mL "]
-    if message.author.id == 132694825454665728:  # Me
-        ret += ["baka ", "bakane "]
-    return ret
-
-bot = commands.Bot(command_prefix=get_pre, description=description, pm_help=True)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("Akane ", "akane "), description=description, pm_help=True)
 
 
 @bot.event
