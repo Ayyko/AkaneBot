@@ -22,7 +22,7 @@ startup_extensions = ["cogs.MuvLuv", "cogs.owner", "cogs.search", "cogs.utility"
 
 # async def get_pre(self, message):
 #     ret = commands.when_mentioned(self, message)
-#     ret += ["Akane ", "akane ", "(•ω•) "]
+#     ret += ["Akane ", "akane "]
 #     if message.guild and message.guild.id == 169056767219597312:
 #         ret += ["ml ", "Ml ", "ML ", "mL "]
 #     if message.author.id == 132694825454665728:  # Me
