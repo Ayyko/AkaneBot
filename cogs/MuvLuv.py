@@ -7,7 +7,7 @@ from .utils.helpers import TimeParser
 from .utils import checks
 
 
-class MuvLuv:
+class MuvLuv(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.ml_guild = 169056767219597312
