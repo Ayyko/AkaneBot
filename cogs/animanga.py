@@ -15,7 +15,7 @@ class Animanga(commands.Cog):
         if message.guild.id in self.bot.shit['anime_guilds'] and message.content.startswith("{{")\
                 and message.content.endswith("}}"):
             if message.content[2:-2] in self.bot.shit["anime_syns"]:
-                title = urllib.parse.quote(self.bot.shit["anime_syns"][message.content[2:-2]])
+                title = urllib.parse.quote(self.bot.shit["anime_syns"][message.content[2:-2].lower()])
             else:
                 title = urllib.parse.quote(message.content[2:-2])
             base_url = "https://api.jikan.moe/v3/search/anime?q="
@@ -42,7 +42,7 @@ class Animanga(commands.Cog):
         if message.guild.id in self.bot.shit['anime_guilds'] and message.content.startswith("[[") \
                 and message.content.endswith("]]"):
             if message.content[2:-2] in self.bot.shit["manga_syns"]:
-                title = urllib.parse.quote(self.bot.shit["manga_syns"][message.content[2:-2]])
+                title = urllib.parse.quote(self.bot.shit["manga_syns"][message.content[2:-2].lower()])
             else:
                 title = urllib.parse.quote(message.content[2:-2])
             base_url = "https://api.jikan.moe/v3/search/manga?q="
@@ -64,12 +64,12 @@ class Animanga(commands.Cog):
 
     @commands.command(name="add syn", aliases=["add synonym", "add anime", "aadd", "addanime"])
     async def add_syn(self, ctx, syn, *, anime):
-        self.bot.shit["anime_syns"][syn] = anime
+        self.bot.shit["anime_syns"][syn.lower()] = anime
         await ctx.send("Synonym added")
 
     @commands.command(name="add manga", aliases=["addmanga"])
     async def add_manga(self, ctx, syn, *, manga):
-        self.bot.shit["manga_syns"][syn] = manga
+        self.bot.shit["manga_syns"][syn.lower()] = manga
         await ctx.send("Synonym added")
 
 
