@@ -58,55 +58,6 @@ class Utility(commands.Cog):
         choice = random.choice(choices)
         await ctx.send(choice.replace("@", "@​​\u200B"))
 
-    @commands.command()
-    async def votekick(self, ctx, target: discord.Member):
-        if ctx.guild.id != 203903748597219328:  # personal server
-            return
-        if not target:
-            await ctx.send("pick a real person (mention them if you have to)")
-            return
-        if target.id not in self.bot.shit["votes"]["kick"]:
-            self.bot.shit["votes"]["kick"][target.id] = [ctx.message.author.id]
-        else:
-            if ctx.message.author.id in self.bot.shit["votes"]["kick"]:
-                self.bot.shit["votes"]["kick"][target.id].remove(ctx.message.author.id)
-                await ctx.send("Your vote has been removed")
-            else:
-                self.bot.shit["votes"]["kick"][target.id].append(ctx.message.author.id)
-        await ctx.send("There are now {} votes out of 5 needed to kick {}".format(len(self.bot.shit["votes"]["kick"][target.id]), target))
-        if len(self.bot.shit["votes"]["kick"][target.id]) > 4:
-            await ctx.guild.kick(target)
-            await ctx.send("{} has been kicked by popular vote".format(target))
-            ret = "The members who voted for this were "
-            for voter in self.bot.shit["votes"]["kick"][target.id]:
-                ret += "<@{}> ".format(str(voter))
-            await ctx.send(ret)
-            del self.bot.shit["votes"]["kick"][target.id]
-
-    @commands.command()
-    async def voteban(self, ctx, target: discord.Member):
-        if ctx.guild.id != 203903748597219328:  # personal server
-            return
-        if not target:
-            await ctx.send("pick a real person (mention them if you have to)")
-            return
-        if target.id not in self.bot.shit["votes"]["ban"]:
-            self.bot.shit["votes"]["ban"][target.id] = [ctx.message.author.id]
-        else:
-            if ctx.message.author.id in self.bot.shit["votes"]["ban"][target.id]:
-                self.bot.shit["votes"]["ban"][target.id].remove(ctx.message.author.id)
-                await ctx.send("Your vote has been removed")
-            else:
-                self.bot.shit["votes"]["ban"][target.id].append(ctx.message.author.id)
-        await ctx.send("There are now {} votes out of 7 needed to ban {}".format(len(self.bot.shit["votes"]["ban"][target.id]), target))
-        if len(self.bot.shit["votes"]["ban"][target.id]) > 6:
-            await ctx.guild.ban(target)
-            await ctx.send("{} has been banned by popular vote".format(target))
-            ret = "The members who voted for this were "
-            for voter in self.bot.shit["votes"]["ban"][target.id]:
-                ret += "<@{}> ".format(str(voter))
-            await ctx.send(ret)
-            del self.bot.shit["votes"]["ban"][target.id]
 
 
 def setup(bot):
