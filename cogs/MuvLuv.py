@@ -42,7 +42,7 @@ class MuvLuv(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        if ctx.guild.id != self.ml_guild:
+        if member.guild.id != self.ml_guild:
             return
         create_delta = datetime.datetime.utcnow() - discord.utils.snowflake_time(member.id)
         create_list = ["today", "a day ago", "two days ago", "a few days ago", "a few days ago", "a few days ago", "a few days ago", "a week ago", "a week ago", "a week ago"]
@@ -56,25 +56,25 @@ class MuvLuv(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        if ctx.guild.id != self.ml_guild:
+        if member.guild.id != self.ml_guild:
             return
         await self.ml_announce.send("Member left: {a.name}, ({a.id})".format(a=member))
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
-        if ctx.guild.id != self.ml_guild:
+        if guild.id != self.ml_guild:
             return
         await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
 
     @commands.Cog.listener()
     async def on_member_unban(self, guild, user):
-        if ctx.guild.id != self.ml_guild:
+        if guild.id != self.ml_guild:
             return
         await self.ml_announce.send("Member unbanned: {a.name}, ({a.id})".format(a=user))
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        if ctx.guild.id != self.ml_guild:
+        if before.guild.id != self.ml_guild:
             return
         if before.content == after.content:
             return
@@ -95,7 +95,7 @@ class MuvLuv(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if ctx.guild.id != self.ml_guild:
+        if message.guild.id != self.ml_guild:
             return
         if message.channel == self.ml_announce:
             return
