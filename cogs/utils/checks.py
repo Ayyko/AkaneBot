@@ -12,8 +12,3 @@ def has_perm(perm):
     def inner(ctx):
         return getattr(ctx.author.guild_permissions, perm)
     return check(inner)
-
-def is_ml():
-    def inner(ctx):
-        return ctx.guild.id == ml_id
-    return check(inner)

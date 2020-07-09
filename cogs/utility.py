@@ -7,12 +7,6 @@ import random
 import typing
 
 
-
-class GenObj(commands.Converter):
-    async def convert(self, ctx, argument):
-        return argument.id
-
-
 class Utility(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -26,8 +20,13 @@ class Utility(commands.Cog):
         await ctx.send(choice.replace("@", "@​​\u200B"))
 
     @commands.command()
-    async def age(self, ctx, id: typing.Union[int, GenObj]):
+    async def age(self, ctx, id: typing.Union[int, discord.User]):
         """Finds the age relative to the current time of any id or discord Object"""
+        try:
+            id = id.id
+        except AttributeError:
+            pass
+        
         create_delta = datetime.datetime.utcnow() - discord.utils.snowflake_time(id)
         create_list = ["today", "a day ago", "two days ago", "a few days ago", "a few days ago", "a few days ago", "a few days ago", "a week ago", "a week ago", "a week ago"]
         create_str = "a while ago " if create_delta.days > 9 else create_list[create_delta.days]
