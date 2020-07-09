@@ -4,7 +4,7 @@ import aiohttp
 import asyncio
 import datetime
 from .utils.helpers import TimeParser
-from .utils.checks import has_perm, is_ml
+from .utils.checks import has_perm
 
 
 class MuvLuv(commands.Cog):
