@@ -7,6 +7,12 @@ import random
 import typing
 
 
+
+class GenObj(commands.Converter):
+    async def convert(self, ctx, argument):
+        return argument.id
+
+
 class Utility(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -27,11 +33,6 @@ class Utility(commands.Cog):
         create_str = "a while ago " if create_delta.days > 9 else create_list[create_delta.days]
         await ctx.send("Created {b} [{c} ago]".format(b=create_str, c=str(create_delta)))
         
-
-
-class GenObj(commands.Converter):
-    async def convert(self, ctx, argument):
-        return argument.id
 
 def setup(bot):
     bot.add_cog(Utility(bot))

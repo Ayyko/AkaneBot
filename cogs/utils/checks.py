@@ -14,4 +14,6 @@ def has_perm(perm):
     return check(inner)
 
 def is_ml():
-    return check(lambda ctx: ctx.guild.id == ml_id)
+    def inner(ctx):
+        return ctx.guild.id == ml_id
+    return check(inner)
