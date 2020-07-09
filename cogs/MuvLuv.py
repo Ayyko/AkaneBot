@@ -58,19 +58,19 @@ class MuvLuv(commands.Cog):
     async def on_member_remove(self, member):
         if member.guild.id != self.ml_guild:
             return
-        await self.ml_announce.send("Member left: {a.name}, ({a.id})".format(a=member))
+        await self.ml_announce.send("Member left: {a.name} [{a.id}]".format(a=member))
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
         if guild.id != self.ml_guild:
             return
-        await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
+        await self.ml_announce.send("🔨🔨 Member banned: {a.name} [{a.id}] 🔨🔨".format(a=member))
 
     @commands.Cog.listener()
     async def on_member_unban(self, guild, user):
         if guild.id != self.ml_guild:
             return
-        await self.ml_announce.send("Member unbanned: {a.name}, ({a.id})".format(a=user))
+        await self.ml_announce.send("Member unbanned: {a.name} [{a.id}]".format(a=user))
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
