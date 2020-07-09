@@ -3,8 +3,8 @@ from discord.ext import commands
 import aiohttp
 import asyncio
 import datetime
-from .utils.helpers import TimeParser
-from .utils import checks
+from utils.helpers import TimeParser
+from utils.checks import has_perm, is_ml
 
 
 class MuvLuv(commands.Cog):
@@ -23,11 +23,10 @@ class MuvLuv(commands.Cog):
                          593245318888292383: [discord.Object(id=180756419174203393)]}    # spoiler
 
     @commands.command(enabled=False)
-    @checks.has_perm("kick_members")
+    @has_perm("kick_members")
+    @is_ml()
     async def mute(self, ctx, target: discord.Member, time: TimeParser=0, *, reason=""):
         """Mutes a member for [time], with an optional reason"""
-        if ctx.guild.id != self.ml_guild:
-            return
         if time.seconds < 1:
             self.bot.reply("Please use a valid time")
             return
@@ -41,33 +40,36 @@ class MuvLuv(commands.Cog):
         await self.ml_announce.send("{} has been unmuted".format(target.mention))
 
     @commands.Cog.listener()
+    @is_ml()
     async def on_member_join(self, member):
-        if member.guild.id == self.ml_guild:
-            await self.ml_announce.send("@here Member joined: {a.name}, {a.mention}".format(a=member))
+        create_delta = datetime.datetime.utcnow() - discord.utils.snowflake_time(member.id)
+        create_list = ["today", "a day ago", "two days ago", "a few days ago", "a few days ago", "a few days ago", "a few days ago", "a week ago", "a week ago", "a week ago"]
+        create_str = "A while ago " if create_delta.days > 9 else create_list[create_delta.days]
+        
+        await self.ml_announce.send("@here Member joined: {a.name} [{a.mention}] created {b} [{c} ago]".format(a=member, b=create_str, c=str(create_delta)))
 
-            if member.bot:
-                return
-            await member.add_roles(discord.utils.get(member.guild.roles, id=588420756208353291))
-
-    @commands.Cog.listener()
-    async def on_member_remove(self, member):
-        if member.guild.id == self.ml_guild:
-            await self.ml_announce.send("Member left: {a.name}, ({a.id})".format(a=member))
-
-    @commands.Cog.listener()
-    async def on_member_ban(self, guild, member):
-        if guild.id == self.ml_guild:
-            await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
-
-    @commands.Cog.listener()
-    async def on_member_unban(self, guild, user):
-        if guild.id == self.ml_guild:
-            await self.ml_announce.send("Member unbanned: {a.name}, ({a.id})".format(a=user))
-
-    @commands.Cog.listener()
-    async def on_message_edit(self, before, after):
-        if before.guild.id != self.ml_guild:
+        if member.bot:
             return
+        await member.add_roles(discord.utils.get(member.guild.roles, id=588420756208353291))
+
+    @commands.Cog.listener()
+    @is_ml()
+    async def on_member_remove(self, member):
+        await self.ml_announce.send("Member left: {a.name}, ({a.id})".format(a=member))
+
+    @commands.Cog.listener()
+    @is_ml()
+    async def on_member_ban(self, guild, member):
+        await self.ml_announce.send("🔨🔨 Member banned: {a.name}, ({a.id}) 🔨🔨".format(a=member))
+
+    @commands.Cog.listener()
+    @is_ml()
+    async def on_member_unban(self, guild, user):
+        await self.ml_announce.send("Member unbanned: {a.name}, ({a.id})".format(a=user))
+
+    @commands.Cog.listener()
+    @is_ml()
+    async def on_message_edit(self, before, after):
         if before.content == after.content:
             return
         if before.channel == self.ml_announce:
@@ -86,9 +88,8 @@ class MuvLuv(commands.Cog):
         await self.ml_announce.send("{} in #{} edited a message:\n ```diff\n{}```".format(str(after.author), after.channel.name, ret))
 
     @commands.Cog.listener()
+    @is_ml()
     async def on_message_delete(self, message):
-        if message.guild.id != self.ml_guild:
-            return
         if message.channel == self.ml_announce:
             return
         await asyncio.sleep(3)
@@ -114,8 +115,6 @@ class MuvLuv(commands.Cog):
             await self.ml_announce.send("in #{} a message by {} was deleted by {}:\n```{}```".format(message.channel.name, str(message.author), str(message.guild.get_member(deleter)), message.clean_content))
             return
         await self.ml_announce.send("{} in #{} deleted a message:\n```{}```".format(str(message.author), message.channel.name, message.clean_content))
-
-    # anti raid/auto modding stuff
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):

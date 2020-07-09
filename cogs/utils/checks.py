@@ -1,6 +1,7 @@
 from discord.ext.commands import check
 
 owner_id = 132694825454665728
+ml_id = 169056767219597312
 
 
 def is_owner():
@@ -11,3 +12,6 @@ def has_perm(perm):
     def inner(ctx):
         return getattr(ctx.author.guild_permissions, perm)
     return check(inner)
+
+def is_ml():
+    return check(lambda ctx: ctx.guild.id == ml_id)
