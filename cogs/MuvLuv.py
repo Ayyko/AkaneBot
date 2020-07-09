@@ -83,9 +83,9 @@ class MuvLuv(commands.Cog):
                         hb_url = "https://hastebin.com/{}".format(resp["key"])
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
-            await self.ml_announce.send("{} in #{} edited a pretty big message, hastebin link: {}.diff".format(str(after.author), after.channel.name, hb_url))
+            await self.ml_announce.send("{} in <#{}> edited a pretty big message, hastebin link: {}.diff".format(str(after.author), after.channel.id, hb_url))
             return
-        await self.ml_announce.send("{} in #{} edited a message:\n ```diff\n{}```".format(str(after.author), after.channel.name, ret))
+        await self.ml_announce.send("{} in <#{}> edited a message:\n ```diff\n{}```".format(str(after.author), after.channel.id, ret))
 
     @commands.Cog.listener()
     @is_ml()
@@ -107,14 +107,14 @@ class MuvLuv(commands.Cog):
                     except KeyError:
                         hb_url = "There was an error uploading to hb: {}".format(resp)
             if deleter:
-                await self.ml_announce.send("in #{} a pretty big message by {} was deleted by {}, hastebin link: {}".format(message.channel.name, str(message.author), str(message.guild.get_member(deleter)), hb_url))
+                await self.ml_announce.send("in <#{}> a pretty big message by {} was deleted by {}, hastebin link: {}".format(message.channel.id, str(message.author), str(message.guild.get_member(deleter)), hb_url))
                 return
-            await self.ml_announce.send("{} in #{} deleted a pretty big message, hastebin link: {}".format(str(message.author), message.channel.name, hb_url))
+            await self.ml_announce.send("{} in <#{}> deleted a pretty big message, hastebin link: {}".format(str(message.author), message.channel.id, hb_url))
             return
         if deleter:
-            await self.ml_announce.send("in #{} a message by {} was deleted by {}:\n```{}```".format(message.channel.name, str(message.author), str(message.guild.get_member(deleter)), message.clean_content))
+            await self.ml_announce.send("in <#{}> a message by {} was deleted by {}:\n```{}```".format(message.channel.id, str(message.author), str(message.guild.get_member(deleter)), message.clean_content))
             return
-        await self.ml_announce.send("{} in #{} deleted a message:\n```{}```".format(str(message.author), message.channel.name, message.clean_content))
+        await self.ml_announce.send("{} in <#{}> deleted a message:\n```{}```".format(str(message.author), message.channel.id, message.clean_content))
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):

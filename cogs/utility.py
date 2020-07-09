@@ -20,7 +20,7 @@ class Utility(commands.Cog):
         await ctx.send(choice.replace("@", "@​​\u200B"))
 
     @commands.command()
-    async def age(self, ctx, id: typing.Union[int, discord.Object]):
+    async def age(self, ctx, id: typing.Union[int, GenObj]):
         """Finds the age relative to the current time of any id or discord Object"""
         create_delta = datetime.datetime.utcnow() - discord.utils.snowflake_time(id)
         create_list = ["today", "a day ago", "two days ago", "a few days ago", "a few days ago", "a few days ago", "a few days ago", "a week ago", "a week ago", "a week ago"]
