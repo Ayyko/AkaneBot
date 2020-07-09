@@ -46,7 +46,7 @@ class MuvLuv(commands.Cog):
             return
         create_delta = datetime.datetime.utcnow() - discord.utils.snowflake_time(member.id)
         create_list = ["today", "a day ago", "two days ago", "a few days ago", "a few days ago", "a few days ago", "a few days ago", "a week ago", "a week ago", "a week ago"]
-        create_str = "a while ago " if create_delta.days > 9 else create_list[create_delta.days]
+        create_str = "a while ago" if create_delta.days > 9 else create_list[create_delta.days]
         
         await self.ml_announce.send("@here Member joined: {a.name} [{a.mention}] created {b} [{c} ago]".format(a=member, b=create_str, c=str(create_delta)))
 
