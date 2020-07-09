@@ -5,6 +5,7 @@ import datetime
 import aiohttp
 import io
 import random
+import typing
 
 
 class Utility(commands.Cog):
@@ -60,7 +61,7 @@ class Utility(commands.Cog):
         await ctx.send(choice.replace("@", "@​​\u200B"))
 
     @commands.command()
-    async def age(self, ctx, id_or_obj):
+    async def age(self, ctx, id_or_obj: typing.Union[int, discord.Object]):
         """Finds the age relative to the current time of any id or discord Object"""
         try:
             id = id_or_obj.id
