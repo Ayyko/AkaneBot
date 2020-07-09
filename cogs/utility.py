@@ -21,7 +21,7 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def age(self, ctx, id: typing.Union[int, discord.User]):
-        """Finds the age relative to the current time of any id or discord Object"""
+        """Finds the age relative to the current time of any id or User"""
         try:
             id = id.id
         except AttributeError:
