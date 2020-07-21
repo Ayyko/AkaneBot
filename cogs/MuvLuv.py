@@ -36,6 +36,7 @@ class MuvLuv(commands.Cog):
         
         embed.set_author(name=f"{ctx.author} joined", icon_url=ctx.author.avatar_url)
         embed.add_field(name="Account Age", value=str(create_delta)[:-7])
+        embed.add_field(name="\u200b", value="\u200b") # spacer, hopefully?
         embed.add_field(name="Invite Used", value=invite)
         embed.add_field(name="ID", value=f"{ctx.author.id}")
         embed.timestamp = datetime.datetime.now()
