@@ -22,6 +22,26 @@ class MuvLuv(commands.Cog):
                          593245068702253076: [discord.Object(id=360896131015639042)],    # lewd
                          593245318888292383: [discord.Object(id=180756419174203393)]}    # spoiler
 
+    @commands.command()
+    async def logtest(self, ctx, option: int):
+        invite = "PHOLDR"
+
+        create_delta = datetime.datetime.utcnow() - discord.utils.snowflake_time(ctx.author.id)
+        if create_delta.days < 1:
+            embed = discord.Embed(color=discord.Color.red())
+        elif create_delta.days < 8:
+            embed = discord.Embed(color=discord.Color(value=16776960))
+        else:
+            embed = discord.Embed()
+        
+        embed.set_author(name=f"{ctx.author} joined", icon_url=ctx.author.avatar_url)
+        embed.add_field(name="Account Age", value=str(create_delta)[:-7])
+        embed.add_field(name="Invite Used", value=invite)
+        embed.add_field(name="ID", value=f"{ctx.author.id}")
+        embed.timestamp = datetime.datetime.now()
+
+        await ctx.send(embed=embed)
+
     @commands.command(enabled=False)
     @has_perm("kick_members")
     async def mute(self, ctx, target: discord.Member, time: TimeParser=0, *, reason=""):
