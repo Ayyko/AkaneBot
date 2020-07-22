@@ -23,7 +23,7 @@ class MuvLuv(commands.Cog):
                          593245318888292383: [discord.Object(id=180756419174203393)]}    # spoiler
 
     @commands.command()
-    async def logtest(self, ctx, option: int):
+    async def logtest(self, ctx, option: int =1):
         invite = "PHOLDR"
 
         create_delta = datetime.datetime.utcnow() - discord.utils.snowflake_time(ctx.author.id)
@@ -34,9 +34,17 @@ class MuvLuv(commands.Cog):
         else:
             embed = discord.Embed()
         
-        embed.set_author(name=f"{ctx.author} joined", icon_url=ctx.author.avatar_url)
+        if option == 1:
+            embed.set_author(name=f"{ctx.author} joined", icon_url=ctx.author.avatar_url)
+        if option == 2:
+            embed.title = f"{ctx.author} joined"
+            embed.set_image(url=ctx.author.avatar_url)
+        if option == 3:
+            embed.title = f"{ctx.author} joined"
+
         embed.add_field(name="Account Age", value=str(create_delta)[:-7])
-        embed.add_field(name="\u200b", value="\u200b") # spacer, hopefully?
+        if not option==4:
+            embed.add_field(name="\u200b", value="\u200b") # spacer, hopefully?
         embed.add_field(name="Invite Used", value=invite)
         embed.add_field(name="ID", value=f"{ctx.author.id}")
         embed.timestamp = datetime.datetime.now()
