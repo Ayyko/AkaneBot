@@ -38,8 +38,8 @@ class MuvLuv(commands.Cog):
             embed.set_author(name=f"{ctx.author} joined", icon_url=ctx.author.avatar_url)
         if option == 2:
             embed.title = f"{ctx.author} joined"
-            embed.set_image(url=ctx.author.avatar_url)
-        if option == 3:
+            embed.set_thumbnail(url=ctx.author.avatar_url)
+        if option in [3,4]:
             embed.title = f"{ctx.author} joined"
 
         embed.add_field(name="Account Age", value=str(create_delta)[:-7])
