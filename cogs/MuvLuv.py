@@ -44,7 +44,7 @@ class MuvLuv(commands.Cog):
 
         embed.add_field(name="Account Age", value=str(create_delta)[:-7])
         if not option==4:
-            embed.add_field(name="\u200b", value="\u200b") # spacer, hopefully?
+            embed.add_field(name="\u200b", value="\u200b") # spacer
         embed.add_field(name="Invite Used", value=invite)
         embed.add_field(name="ID", value=f"{ctx.author.id}")
         embed.timestamp = datetime.datetime.now()
@@ -152,29 +152,15 @@ class MuvLuv(commands.Cog):
             return
         await self.ml_announce.send("{} in <#{}> deleted a message:\n```{}```".format(str(message.author), message.channel.id, message.clean_content))
 
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload):
-        if payload.channel_id != 588421329590419456:
-            return
-        # if payload.emoji.id == 358065563164999690:  # cadet
-        #     await asyncio.sleep(1)
-        #     await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*[discord.Object(id=188030091148656641)])
-        # if payload.emoji.id == 358066129345708032:  # eishi
-        #     await asyncio.sleep(1)
-        #     await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*[discord.Object(id=173104384392167425)])
-        # if payload.emoji.id == 358066125696794624:  # valk
-        #     await asyncio.sleep(1)
-        #     await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*[discord.Object(id=173100534474080257)])
-        # if payload.emoji.id == 593245318888292383:  # spoiler (check2)
-        #     await asyncio.sleep(1)
-        #     await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*[discord.Object(id=180756419174203393)])
-        # if payload.emoji.id == 593245068702253076:  # lewd (check1)
-        #     await asyncio.sleep(1)
-        #     await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*[discord.Object(id=360896131015639042)])
-        if payload.emoji.id == 593245363918602260:  # done (check3)
-            await asyncio.sleep(1)
-            await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[discord.Object(id=588420756208353291)])
-        await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
+    ### REACTION AUTO ROLE
+    # @commands.Cog.listener()
+    # async def on_raw_reaction_add(self, payload):
+    #     if payload.channel_id != 588421329590419456:
+    #         return
+    #     if payload.emoji.id == 593245363918602260:  # done (check3)
+    #         await asyncio.sleep(1)
+    #         await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[discord.Object(id=588420756208353291)])
+    #     await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
 
 def setup(bot):
     bot.add_cog(MuvLuv(bot))
