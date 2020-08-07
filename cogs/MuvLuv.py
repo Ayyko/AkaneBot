@@ -153,14 +153,14 @@ class MuvLuv(commands.Cog):
         await self.ml_announce.send("{} in <#{}> deleted a message:\n```{}```".format(str(message.author), message.channel.id, message.clean_content))
 
     ### REACTION AUTO ROLE
-    # @commands.Cog.listener()
-    # async def on_raw_reaction_add(self, payload):
-    #     if payload.channel_id != 588421329590419456:
-    #         return
-    #     if payload.emoji.id == 593245363918602260:  # done (check3)
-    #         await asyncio.sleep(1)
-    #         await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[discord.Object(id=588420756208353291)])
-    #     await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        if payload.channel_id != 588421329590419456:
+            return
+        if payload.emoji.id == 593245363918602260:  # done (check3)
+            await asyncio.sleep(1)
+            await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[discord.Object(id=588420756208353291)])
+        await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
 
 def setup(bot):
     bot.add_cog(MuvLuv(bot))
