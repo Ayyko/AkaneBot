@@ -158,8 +158,10 @@ class MuvLuv(commands.Cog):
         if payload.channel_id != 588421329590419456:
             return
         if payload.emoji.id == 593245363918602260:  # done (check3)
+            print(f"done {payload.user_id}")
             await asyncio.sleep(1)
             await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[discord.Object(id=588420756208353291)])
+            return
         await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
 
 def setup(bot):
