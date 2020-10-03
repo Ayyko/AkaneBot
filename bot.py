@@ -20,7 +20,10 @@ Made by Ako#0408(132694825454665728) using discord.py version ''' + discord.__ve
 
 startup_extensions = ["cogs.MuvLuv", "cogs.owner", "cogs.search", "cogs.utility", "cogs.nsa", "cogs.animanga"]
 
-bot = commands.Bot(command_prefix=["Akane ", "akane ", "<@202989516904988673> ", "<@!202989516904988673> "], description=description, pm_help=True)
+intents = discord.Intents.default()
+intents.members = True
+
+bot = commands.Bot(command_prefix=["Akane ", "akane ", "<@202989516904988673> ", "<@!202989516904988673> "], description=description, pm_help=True, intents=intents)
 
 
 @bot.event
