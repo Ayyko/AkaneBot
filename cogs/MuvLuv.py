@@ -78,10 +78,12 @@ class MuvLuv(commands.Cog):
         create_str = "a while ago" if create_delta.days > 9 else create_list[create_delta.days]
         
         await self.ml_announce.send("@here Member joined: {a.name} [{a.mention}] created {b} [{c} ago]".format(a=member, b=create_str, c=str(create_delta)[:-7]))
-
+        print("{a.name} joined".format(a=member))
         if member.bot:
             return
+        await asyncio.sleep(10)
         await member.add_roles(discord.utils.get(member.guild.roles, id=588420756208353291))
+        print("{a.name} newcomer'd".format(a=member))
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
@@ -152,17 +154,17 @@ class MuvLuv(commands.Cog):
             return
         await self.ml_announce.send("{} in <#{}> deleted a message:\n```{}```".format(str(message.author), message.channel.id, message.clean_content))
 
-    ## REACTION AUTO ROLE
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload):
-        if payload.channel_id != 588421329590419456:
-            return
-        if payload.emoji.id == 593245363918602260:  # done (check3)
-            print(f"done {payload.user_id}")
-            await asyncio.sleep(1)
-            await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[discord.Object(id=588420756208353291)])
-            return
-        await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
+#    ## REACTION AUTO ROLE
+#    @commands.Cog.listener()
+#    async def on_raw_reaction_add(self, payload):
+#        if payload.channel_id != 588421329590419456:
+#            return
+#        if payload.emoji.id == 593245363918602260:  # done (check3)
+#            print(f"done {payload.user_id}")
+#            await asyncio.sleep(1)
+#            await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).remove_roles(*[discord.Object(id=588420756208353291)])
+#            return
+#        await self.bot.get_guild(self.ml_guild).get_member(payload.user_id).add_roles(*self.ml_roles[payload.emoji.id])
 
 def setup(bot):
     bot.add_cog(MuvLuv(bot))

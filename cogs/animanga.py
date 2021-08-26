@@ -40,7 +40,7 @@ class Animanga(commands.Cog):
 
     @commands.Cog.listener(name="on_message")
     async def manga_search(self, message):
-        regex = r"\[\[(.+?)\]\]"
+        regex = r"\<\<(.+?)\>\>"
         if not message.guild:
             return
         if message.guild.id in self.bot.shit['anime_guilds']:
